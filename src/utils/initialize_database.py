@@ -16,7 +16,7 @@ def create_tables(connection):
     cursor.executescript("""
         CREATE TABLE reference_types (
             id INTEGER PRIMARY KEY,
-            type_name TEXT 
+            type_name TEXT UNIQUE
         );
 
         CREATE TABLE latex_references (
