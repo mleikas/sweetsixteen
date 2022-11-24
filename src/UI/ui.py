@@ -48,4 +48,3 @@ def book():
         'note':note,
     }
     return book_dict
-query()
