@@ -3,7 +3,7 @@ from database_connection import get_database_connection
 
 def drop_tables(connection):
     cursor = connection.cursor()
-    tables = ["reference_types", "fields", "latex_references"]
+    tables = ["latex_references", "fields", "reference_types"]
 
     for table in tables:
         sql = "DROP TABLE IF EXISTS " + table + ";"
