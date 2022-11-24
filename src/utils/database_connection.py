@@ -1,7 +1,8 @@
 import sqlite3
-import os
+from pathlib import Path
 
-database_path = os.path.realpath("../references.db")
+file_path = Path(__file__).parent.parent
+database_path = file_path / "references.db"
 
 connection = sqlite3.connect(database_path)
 connection.row_factory = sqlite3.Row
