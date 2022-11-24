@@ -4,16 +4,23 @@ def query():
         return book()
 
 def book():
+    key=''
+    author_or_editor=0
+    author=''
+    editor=''
+    title=''
+    publisher=''
+    year=''
     while key=='':
         key=input('Searching key: ')
-    while author_or_editor!='1' or author_or_editor!='2':
+    while int(author_or_editor) != 1 and int(author_or_editor) != 2:
         author_or_editor=input('Press 1 if your book has an author and 2 if an editor: ')
     if author_or_editor=='1':
         while author=='':
             author=input("Book's author: ")
     elif author_or_editor=='2':
         while editor=='':
-            editor=input("Book's editor: ")
+            editor=input("Book's editor: ") 
     while title=='':
         title=input("Book's title: ")
     while publisher=='':
@@ -41,3 +48,4 @@ def book():
         'note':note,
     }
     return book_dict
+query()
