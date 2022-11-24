@@ -24,6 +24,7 @@ def create_tables(connection):
             ref_key TEXT UNIQUE,
             type_id INTEGER REFERENCES reference_types,
             author TEXT,
+            editor TEXT,
             title TEXT,
             year INTEGER,
             publisher TEXT
