@@ -9,3 +9,27 @@
 Tietokannan alustus onnistuu ajamalla sovelluksen juurihakemistossa komento:
 
 `poetry run invoke build`
+
+## Testaus
+
+Testit saadaan tehtyä komennolla
+
+```bash
+poetry run invoke test
+```
+
+## Testikattavuusraportti
+
+Testikattavuusraportin saa htmlcov kansioon komenolla:
+
+```bash
+poetry run invoke coverage-report
+```
+
+## Pylint
+
+Tiedoston [.pylintrc](./.pylintrc) tarkastukset tehdään komennolla:
+
+```bash
+poetry run invoke lint
+```

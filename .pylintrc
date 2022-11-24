@@ -1,3 +1,11 @@
-[DESIGN]
+[MASTER]
 
-max-args=4
+ignore=tests
+
+[MESSAGE CONTROL]
+
+[FORMAT]
+
+[REFACTORING]
+
+[DESIGN]
