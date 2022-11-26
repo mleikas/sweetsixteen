@@ -6,9 +6,17 @@
 
 ## Asennus
 
+Poetry tulee olla asennettuna ohjelman suoritusta varten. Tarvittavien kirjastojen asennus onnnistuu komennolla
+
+```bash
+poetry install
+```
+
 Tietokannan alustus onnistuu ajamalla sovelluksen juurihakemistossa komento:
 
-`poetry run invoke build`
+```bash
+poetry run invoke build
+```
 
 ## Testaus
 
