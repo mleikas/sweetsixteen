@@ -36,7 +36,7 @@ class UI:
 
             if cmd == 3:
                 book_dict = self.ref_service.add_book()
-                self.ref_service.add_reference(book_dict)
+                self.ref_service.submit_book_reference(book_dict)
 
             if cmd == 4:
                 all_references = self.ref_service.get_all_references()
