@@ -63,7 +63,7 @@ class ReferenceRepository:
             "t_id": type_id,
             "auth": reference_obj["author"],
             "edit": reference_obj["editor"],
-            "title": reference_obj["editor"],
+            "title": reference_obj["title"],
             "year": reference_obj["year"],
             "publ": reference_obj["publisher"]
         })

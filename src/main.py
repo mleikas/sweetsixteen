@@ -1,8 +1,12 @@
+from UI.ui import UI
 from repositories.reference_repository import (
     reference_repository as default_reference_repository
 )
 
+ui = UI()
+ui.query()
 
+"""
 while True:
     print("\n(1) Add ref type")
     print("(2) Get available reference types")          
@@ -41,3 +45,4 @@ while True:
             for key, value in reference.items():
                 print(f"{key}: {value}")
             print("---")
+"""""
