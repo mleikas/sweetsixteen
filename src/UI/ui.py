@@ -19,9 +19,9 @@ class UI:
             print("(2) Get available reference types")
             print("(3) Add book")
             print("(4) Show all references in database\n")
-            cmd = int(input("Command: "))
+            cmd = input("Command: ")
 
-            if cmd == 1:
+            if cmd == "1":
                 name = input("Reference type name: ")
                 new_ref_id = self.ref_service.add_reference_type(name)
                 if new_ref_id:
@@ -29,16 +29,16 @@ class UI:
                 else:
                     print(f"\n{name} already exists!")
 
-            if cmd == 2:
+            if cmd == "2":
                 ref_types = self.ref_service.get_reference_type_names()
                 for type in ref_types:
                     print(type)
 
-            if cmd == 3:
+            if cmd == "3":
                 book_dict = self.ref_service.add_book()
                 self.ref_service.submit_book_reference(book_dict)
 
-            if cmd == 4:
+            if cmd == "4":
                 all_references = self.ref_service.get_all_references()
                 print("\n*** References in database ***")
                 for reference in all_references:
