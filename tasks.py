@@ -5,6 +5,7 @@ from invoke import task
 def build(ctx):
     ctx.run("python3 src/utils/initialize_database.py")
 
+
 @task
 def start(ctx):
     ctx.run("python3 src/main.py", pty=True)
