@@ -1,9 +1,9 @@
+from sqlite3 import IntegrityError
 from utils.database_connection import get_database_connection
 
 
 def parse_ref_type_from_row(row):
-    return (row["type_name"])
-
+    return row["type_name"]
 
 def parse_ref_object_from_row(row):
     ref_object = {
@@ -17,7 +17,6 @@ class ReferenceRepository:
         self._connection = connection
 
     def add_ref_type(self, type_name: str):
-        print("Creating reference type", type_name)
         cursor = self._connection.cursor()
 
         try:
@@ -27,7 +26,7 @@ class ReferenceRepository:
             new_type = cursor.fetchone()
             self._connection.commit()
             return new_type[0]
-        except:
+        except IntegrityError:
             return None
 
     def get_ref_type_names(self):
