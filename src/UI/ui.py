@@ -19,6 +19,7 @@ class UI:
             print("(2) Get available reference types")
             print("(3) Add book")
             print("(4) Show all references in database\n")
+            print("(Other) End program\n")
             cmd = input("Command: ")
 
             if cmd == "1":
@@ -45,7 +46,9 @@ class UI:
                     for key, value in reference.items():
                         print(f"{key}: {value}")
                     print("---")
-
+            
+            else:
+                break
     """
     def book(self):
         key=''
