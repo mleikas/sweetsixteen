@@ -18,6 +18,14 @@ Tietokannan alustus onnistuu ajamalla sovelluksen juurihakemistossa komento:
 poetry run invoke build
 ```
 
+## Suoritus
+
+Ohjelma suoritetaan komennolla
+
+```bash
+poetry run invoke start
+```
+
 ## Testaus
 
 Testit saadaan tehtyä komennolla
