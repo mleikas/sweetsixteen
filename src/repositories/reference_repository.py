@@ -46,26 +46,35 @@ class ReferenceRepository:
             return result["id"]
         return None
 
-    def add_reference(self, reference_obj, type_name="BOOK"):
+    def check_ref_key_exists(self, ref_key: str):
+        cursor = self._connection.cursor()
+
+        sql = "SELECT ref_key FROM latex_references WHERE ref_key=:r_key"
+        cursor.execute(sql, {"r_key": ref_key})
+        result = cursor.fetchone()
+        if result:
+            return result[0]
+        return None
+
+    def add_reference(self, ref_obj, type_name="BOOK"):
         cursor = self._connection.cursor()
 
         type_id = self.get_ref_type_id_by_name(type_name)
         if not type_id:
             type_id = self.add_ref_type(type_name)
 
-        # TODO: Hpw should a unique ref_key be generated?
-        # Skipping field for now
         sql = "INSERT INTO latex_references \
-               (type_id, author, editor, title, year, publisher) \
-               VALUES (:t_id, :auth, :edit, :title, :year, :publ)"
+               (type_id, ref_key, author, editor, title, year, publisher) \
+               VALUES (:t_id, :r_key,:auth, :edit, :title, :year, :publ)"
 
         cursor.execute(sql, {
             "t_id": type_id,
-            "auth": reference_obj["author"],
-            "edit": reference_obj["editor"],
-            "title": reference_obj["title"],
-            "year": reference_obj["year"],
-            "publ": reference_obj["publisher"]
+            "r_key": ref_obj["key"],
+            "auth": ref_obj["author"],
+            "edit": ref_obj["editor"],
+            "title": ref_obj["title"],
+            "year": ref_obj["year"],
+            "publ": ref_obj["publisher"]
         })
 
         self._connection.commit()

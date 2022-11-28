@@ -20,7 +20,11 @@ class ReferenceService():
         publisher = ''
         year = ''
         while key == '':
-            key = input('Searching key: ')
+            key_candidate = input('Citation key: ')
+            if not rr.check_ref_key_exists(key_candidate):
+                key = key_candidate
+            else:
+                print("That citation key is already in use. Choose another one.")
         while int(author_or_editor) != 1 and int(author_or_editor) != 2:
             author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
         if author_or_editor == '1':
