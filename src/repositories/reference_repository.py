@@ -20,12 +20,11 @@ class ReferenceRepository:
         cursor = self._connection.cursor()
 
         try:
-            sql = "INSERT INTO reference_types (type_name) VALUES (:t_name) \
-                   RETURNING id"
+            sql = "INSERT INTO reference_types (type_name) VALUES (:t_name)"
             cursor.execute(sql, {"t_name": type_name})
-            new_type = cursor.fetchone()
             self._connection.commit()
-            return new_type[0]
+            new_type_id = cursor.lastrowid
+            return new_type_id
         except IntegrityError:
             return None
 
