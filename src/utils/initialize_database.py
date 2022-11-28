@@ -1,4 +1,7 @@
-from utils.database_connection import get_database_connection
+if __name__ == "__main__":
+    from database_connection import get_database_connection
+else:
+    from .database_connection import get_database_connection
 
 
 def drop_tables(connection):
