@@ -46,7 +46,7 @@ class UI:
                     for key, value in reference.items():
                         print(f"{key}: {value}")
                     print("---")
-            
+
             else:
                 break
     """

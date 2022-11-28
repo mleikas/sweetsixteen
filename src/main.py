@@ -1,7 +1,7 @@
 from UI.ui import UI
-from repositories.reference_repository import (
+"""from repositories.reference_repository import (
     reference_repository as default_reference_repository
-)
+)"""
 
 ui = UI()
 ui.query()
@@ -9,7 +9,7 @@ ui.query()
 """
 while True:
     print("\n(1) Add ref type")
-    print("(2) Get available reference types")          
+    print("(2) Get available reference types")
     print("(3) Add book")
     print("(4) Show all references in database\n")
     cmd = int(input("Command: "))
@@ -36,7 +36,7 @@ while True:
             "publisher": "Änkkälinnä publishing"
         }
         print("Adding mock book to database")
-        default_reference_repository.add_reference(mock_book)   
+        default_reference_repository.add_reference(mock_book)
 
     if cmd == 4:
         all_references = default_reference_repository.get_all()

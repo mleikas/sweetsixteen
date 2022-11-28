@@ -25,7 +25,7 @@ class ReferenceService():
                 key = key_candidate
             else:
                 print("That citation key is already in use. Choose another one.")
-        while author_or_editor != '1' and author_or_editor != '2':
+        while author_or_editor not in ['1', '2']:
             author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
         if author_or_editor == '1':
             while author == '':
