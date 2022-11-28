@@ -1,4 +1,5 @@
 references.db
+test_references.db
 __pycache__
 *htmlcov
 *.coverage

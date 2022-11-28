@@ -1,4 +1,4 @@
-from database_connection import get_database_connection
+from utils.database_connection import get_database_connection
 
 
 def drop_tables(connection):
@@ -22,7 +22,9 @@ def create_tables(connection):
         CREATE TABLE latex_references (
             id INTEGER PRIMARY KEY,
             ref_key TEXT UNIQUE,
-            type_id INTEGER REFERENCES reference_types,
+            type_id INTEGER 
+                REFERENCES reference_types
+                ON DELETE CASCADE,
             author TEXT,
             editor TEXT,
             title TEXT,
@@ -34,10 +36,11 @@ def create_tables(connection):
     connection.commit()
 
 
-def initialize_database():
-    connection = get_database_connection()
+def initialize_database(db_name="references.db"):
+    connection = get_database_connection(db_name)
     drop_tables(connection)
     create_tables(connection)
+    return connection
 
 
 if __name__ == "__main__":

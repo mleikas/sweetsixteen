@@ -2,7 +2,8 @@ from utils.database_connection import get_database_connection
 
 
 def parse_ref_type_from_row(row):
-    return(row["type_name"])
+    return (row["type_name"])
+
 
 def parse_ref_object_from_row(row):
     ref_object = {
@@ -19,7 +20,7 @@ class ReferenceRepository:
         print("Creating reference type", type_name)
         cursor = self._connection.cursor()
 
-        try: 
+        try:
             sql = "INSERT INTO reference_types (type_name) VALUES (:t_name) \
                    RETURNING id"
             cursor.execute(sql, {"t_name": type_name})
@@ -27,7 +28,7 @@ class ReferenceRepository:
             self._connection.commit()
             return new_type[0]
         except:
-            return None 
+            return None
 
     def get_ref_type_names(self):
         cursor = self._connection.cursor()
@@ -43,7 +44,7 @@ class ReferenceRepository:
         cursor.execute(sql, {"t_name": type_name})
         result = cursor.fetchone()
         if result:
-            return result["id"]  
+            return result["id"]
         return None
 
     def add_reference(self, reference_obj, type_name="BOOK"):
@@ -58,7 +59,7 @@ class ReferenceRepository:
         sql = "INSERT INTO latex_references \
                (type_id, author, editor, title, year, publisher) \
                VALUES (:t_id, :auth, :edit, :title, :year, :publ)"
-        
+
         cursor.execute(sql, {
             "t_id": type_id,
             "auth": reference_obj["author"],
@@ -79,3 +80,5 @@ class ReferenceRepository:
 
 
 reference_repository = ReferenceRepository(get_database_connection())
+test_reference_repository = ReferenceRepository(
+    get_database_connection("test_references.db"))
