@@ -76,6 +76,9 @@ class ReferenceService():
     def submit_book_reference(self, book:dict):
         rr.add_reference(book)
 
+    def check_if_empty(self, input):
+        if input == "":
+            raise UserInputError("Field required!")
 
     def validate_book_input(self, book:dict):
         """checks for missing but mandatory info as well as input length
