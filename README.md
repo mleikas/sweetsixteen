@@ -51,3 +51,10 @@ Tiedoston [.pylintrc](./.pylintrc) tarkastukset tehdään komennolla:
 ```bash
 poetry run invoke lint
 ```
+
+## Definition of Done
+
+- Acceptance criteria for a user story are met
+- Unit/integration tests created with at least 85% branch coverage
+- Code pushed to GitHub			
+- Code accepted by tests in Github Actions

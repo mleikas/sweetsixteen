@@ -1,2 +1,5 @@
 [run]
 source = src
+omit = 
+    */tests/*
+    */utils/*
