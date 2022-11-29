@@ -1,12 +1,6 @@
 
 from services.reference_service import ReferenceService
 
-"""
-from repositories.reference_repository import (
-    reference_repository as default_reference_repository
-)
-"""
-
 class UI:
 
     def __init__(self):
@@ -36,7 +30,8 @@ class UI:
                     print(type)
 
             if cmd == "3":
-                book_dict = self.ref_service.add_book()
+                book_dict = self.book()
+                self.ref_service.validate_book_input(book_dict)
                 self.ref_service.submit_book_reference(book_dict)
 
             if cmd == "4":
@@ -49,50 +44,53 @@ class UI:
 
             else:
                 break
-    """
+
     def book(self):
-        key=''
-        author_or_editor=0
-        author=''
-        editor=''
-        title=''
-        publisher=''
-        year=''
-        while key=='':
-            key=input('Searching key: ')
-        while int(author_or_editor) != 1 and int(author_or_editor) != 2:
-            author_or_editor=input('Press 1 if your book has an author and 2 if an editor: ')
-        if author_or_editor=='1':
-            while author=='':
-                author=input("Book's author: ")
-        elif author_or_editor=='2':
-            while editor=='':
-                editor=input("Book's editor: ")
-        while title=='':
-            title=input("Book's title: ")
-        while publisher=='':
-            publisher=input("Book's publisher: ")
-        while year=='':
-            year=input("Publishing year: ")
-        volume=input("Book's volume/number(optional): ")
-        series=input("Book's series(optional): ")
-        address=input("Book's address(optional): ")
-        edition=input("Book's edition(optional): ")
-        month=input("Publishing month(optional): ")
-        note=input("Book's note(optional): ")
-        book_dict={
-            'key':key,
+        key = ''
+        author_or_editor = 0
+        author = ''
+        editor = ''
+        title = ''
+        publisher = ''
+        year = ''
+        while key == '':
+            key_candidate = input('Citation key: ')
+            if not self.ref_service.check_reference_key_exists(key_candidate):
+                key = key_candidate
+            else:
+                print("That citation key is already in use. Choose another one.")
+        while author_or_editor not in ['1', '2']:
+            author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
+        if author_or_editor == '1':
+            while author == '':
+                author = input("Book's author: ")
+        elif author_or_editor == '2':
+            while editor == '':
+                editor = input("Book's editor: ")
+        while title == '':
+            title = input("Book's title: ")
+        while publisher == '':
+            publisher = input("Book's publisher: ")
+        while year == '':
+            year = input("Publishing year: ")
+        volume = input("Book's volume/number(optional): ")
+        series = input("Book's series(optional): ")
+        address = input("Book's address(optional): ")
+        edition = input("Book's edition(optional): ")
+        month = input("Publishing month(optional): ")
+        note = input("Book's note(optional): ")
+        book_dict = {
+            'key': key,
             'author': author,
             'editor': editor,
             'title': title,
-            'publisher':publisher,
-            'year':year,
-            'volume':volume,
-            'series':series,
-            'address':address,
-            'edition':edition,
-            'month':month,
-            'note':note,
+            'publisher': publisher,
+            'year': year,
+            'volume': volume,
+            'series': series,
+            'address': address,
+            'edition': edition,
+            'month': month,
+            'note': note,
         }
         return book_dict
-    """
