@@ -10,10 +10,12 @@ python = "^3.8"
 pylint = "^2.15.6"
 pytest = "^7.2.0"
 invoke = "^1.7.3"
+robotframework = "^6.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^6.5.0"
+robotframework = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
