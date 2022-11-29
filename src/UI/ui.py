@@ -42,7 +42,7 @@ class UI:
                         print(f"{key}: {value}")
                     print("---")
 
-            else:
+            if cmd not in ["1", "2", "3", "4"]:
                 break
 
     def book(self):
