@@ -8,6 +8,8 @@ class TestReferenceRepository(unittest.TestCase):
         # initilizes the database and inserts two references into the database
         initialize_test_database()
         self._ref_repository = ref_repository
+        self._ref_repository.add_reference({"key": "BOOK123", "type_id": 1})
+        self._ref_repository.add_reference({"key": "BOOK124", "type_id": 1})
 
     def test_get_all_references_from_database(self):
         references = self._ref_repository.get_all()
@@ -18,24 +20,14 @@ class TestReferenceRepository(unittest.TestCase):
     def test_adding_book_reference_with_valid_data_adds_book_to_database(self):
         new_book = {
             "key": "auth2022ABBT",
-            "author": "Author, Annie",
-            "editor": "",
-            "title": "A Brilliant Book Title",
-            "publisher": "Publishing Ltd",
-            "year": "2022",
-            "volume": "",
-            "series": "Insightful Books",
-            "address": "Helsinki",
-            "edition": "",
-            "month": "",
-            "note": "",
+            "type_id": 1
         }
 
         self._ref_repository.add_reference(new_book)
-        
+
         ref_list = self._ref_repository.get_all()
         self.assertEqual(len(ref_list), 3)
-    
+
     def test_check_for_existing_cite_key_returns_cite_key_if_key_exists(self):
         returned_key = self._ref_repository.check_ref_key_exists("BOOK123")
         self.assertEqual(returned_key, "BOOK123")
