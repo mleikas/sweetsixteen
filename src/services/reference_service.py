@@ -20,8 +20,10 @@ class ReferenceService():
     def get_reference_type_names(self):
         return rr.get_ref_type_names()
 
-    def add_reference(self, book):
-        return rr.add_reference(book)
+    def add_reference(self, reference):
+        rr.add_reference(reference)
+        ref_key = rr.check_ref_key_exists(reference["ref_key"])
+        return rr.add_reference_entries(reference)
 
     def get_all_references(self):
         references = rr.get_all()
