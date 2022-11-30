@@ -6,6 +6,7 @@ from repositories.reference_repository import reference_repository as rr
 class UserInputError(Exception):
     pass
 
+
 class ReferenceService():
     def __init__(self):
         pass
@@ -23,16 +24,24 @@ class ReferenceService():
         return rr.add_reference(book)
 
     def get_all_references(self):
-        return rr.get_all()
+        references = rr.get_all()
+        new_references = []
+        for ref in references:
+            new_ref = {}
+            for key in ref:
+                if ref[key] != "" and key not in ["id", "type_id"]:
+                    new_ref[key] = ref[key]
+            new_references.append(new_ref)
+        return new_references
 
-    def submit_book_reference(self, book:dict):
+    def submit_book_reference(self, book: dict):
         rr.add_reference(book)
 
     def check_if_empty(self, input):
         if input == "":
             raise UserInputError("Field required!")
 
-    def validate_book_input(self, book:dict):
+    def validate_book_input(self, book: dict):
         """checks for missing but mandatory info as well as input length
         """
         if book["author"] == "" and book["editor"] == "":
@@ -47,5 +56,6 @@ class ReferenceService():
             raise UserInputError("Publisher required!")
         if book["year"] == "":
             raise UserInputError("Year required!")
+
 
 reference_service = ReferenceService()
