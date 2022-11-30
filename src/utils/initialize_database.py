@@ -1,3 +1,5 @@
+from pathlib import Path
+
 if __name__ == "__main__":
     from database_connection import get_database_connection
 else:
@@ -6,7 +8,8 @@ else:
 
 def drop_tables(connection):
     cursor = connection.cursor()
-    tables = ["latex_references", "fields", "reference_types"]
+    tables = ["reference_types", "latex_references",
+              "reference_entries", "field_types"]
 
     for table in tables:
         sql = "DROP TABLE IF EXISTS " + table + ";"
@@ -15,27 +18,10 @@ def drop_tables(connection):
 
 
 def create_tables(connection):
+    schema_path = Path(__file__).parent / "schema.sql"
+    schema_script = open(schema_path, "r").read()
     cursor = connection.cursor()
-    cursor.executescript("""
-        CREATE TABLE reference_types (
-            id INTEGER PRIMARY KEY,
-            type_name TEXT UNIQUE
-        );
-
-        CREATE TABLE latex_references (
-            id INTEGER PRIMARY KEY,
-            ref_key TEXT UNIQUE,
-            type_id INTEGER 
-                REFERENCES reference_types
-                ON DELETE CASCADE,
-            author TEXT,
-            editor TEXT,
-            title TEXT,
-            year INTEGER,
-            publisher TEXT
-        );
-
-    """)
+    cursor.executescript(schema_script)
     connection.commit()
 
 
