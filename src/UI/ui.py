@@ -14,7 +14,8 @@ class UI:
             print("\n(1) Add reference type")
             print("(2) Get available reference types")
             print("(3) Add reference")
-            print("(4) Show all references in database\n")
+            print("(4) Show all references in database")
+            print("(5) Delete reference from database\n")
             print("(Other) End program\n")
             cmd = input("Command: ")
 
@@ -28,8 +29,8 @@ class UI:
 
             if cmd == "2":
                 ref_types = self.ref_service.get_reference_type_names()
-                for type in ref_types:
-                    print(type)
+                for r_type in ref_types:
+                    print(r_type)
 
             if cmd == "3":
                 ''' book_dict = self.book()
@@ -50,10 +51,15 @@ class UI:
                         print(f"{key}: {value}")
                     print("---")
 
-            if cmd not in ["1", "2", "3", "4"]:
-                break
-    
+            if cmd == "5":
+                ref_key = input("Enter citation key of reference to delete: ")
+                # TODO: verify that cite key exists
+                # Show e.g. author, title, year and ask user to verify
+                self.ref_service.delete_reference(ref_key)
+                print("Reference was removed from database.")
 
+            if cmd not in ["1", "2", "3", "4", "5"]:
+                break
 
 
     def ref_query(self, key):
@@ -64,11 +70,11 @@ class UI:
             author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
         if author_or_editor == '1':
             keys.remove('editor')
-            ref_dict['editor']=''        
+            ref_dict['editor']=''
         elif author_or_editor == '2':
             keys.remove('author')
             ref_dict['author']=''
-        
+
         for i in keys:
             if i in ['author', 'editor', 'year', 'title', 'publisher', 'year', 'key']:
                 answer=''
@@ -79,9 +85,6 @@ class UI:
                 answer=input(self.ui_library.questions_dict[i])
             ref_dict[i]=answer
         return ref_dict
-
-
-        
         
         
         

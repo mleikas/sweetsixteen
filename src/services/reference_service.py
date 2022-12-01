@@ -24,6 +24,9 @@ class ReferenceService():
         rr.add_reference(reference)
         ref_key = rr.check_ref_key_exists(reference["ref_key"])
         return rr.add_reference_entries(reference)
+    
+    def delete_reference(self, ref_key: str):
+        rr.delete_reference(ref_key)
 
     def get_all_references(self):
         references = rr.get_all()

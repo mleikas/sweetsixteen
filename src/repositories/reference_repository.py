@@ -92,6 +92,13 @@ class ReferenceRepository:
         })
 
         self._connection.commit()
+    
+    def delete_reference(self, r_key: str):
+        cursor = self._connection.cursor()
+        sql = "DELETE FROM latex_references WHERE ref_key=:r_key"
+        cursor.execute(sql, {"r_key": r_key})
+   
+        self._connection.commit()
 
     def get_all(self):
         cursor = self._connection.cursor()
