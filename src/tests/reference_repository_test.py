@@ -28,6 +28,30 @@ class TestReferenceRepository(unittest.TestCase):
         ref_list = self._ref_repository.get_all()
         self.assertEqual(len(ref_list), 3)
 
+    def test_adding_book_entries(self):
+        book_entries = {
+            "address": "Osoite123",
+            "author": "Authori",
+            "edition": "1",
+            "editor": "Editor123",
+            "month": "January",
+            "note": "This is a note",
+            "number": "4",
+            "publisher": "Otava",
+            "series": "Series?",
+            "title": "Muumit laaksossa",
+            "volume": "2",
+            "year": "2022",
+            "author_firstname": "Authori",
+            "author_lastname": "Authorinen"
+        }
+
+        self._ref_repository.add_reference_entries(book_entries, 1)
+        result = self._ref_repository.get_reference_entries(1)
+
+        self.assertEqual(result["address"], "Osoite123")
+        self.assertDictEqual(book_entries, result)
+
     def test_check_for_existing_cite_key_returns_cite_key_if_key_exists(self):
         returned_key = self._ref_repository.check_ref_key_exists("BOOK123")
         self.assertEqual(returned_key, "BOOK123")

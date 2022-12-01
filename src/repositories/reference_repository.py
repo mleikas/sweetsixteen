@@ -1,5 +1,6 @@
 from sqlite3 import IntegrityError
 from utils.database_connection import get_database_connection
+from functools import reduce
 
 
 def parse_ref_type_from_row(row):
@@ -11,6 +12,12 @@ def parse_ref_object_from_row(row):
         key: row[key] for key in row.keys()
     }
     return ref_object
+
+
+def parse_entry(row):
+    return {
+        row["type_name"]: row["value"]
+    }
 
 
 class ReferenceRepository:
@@ -65,7 +72,7 @@ class ReferenceRepository:
                 cursor.execute(sql, {
                     "type_id": field_type_id,
                     "ref_id": ref_id,
-                    "value": ref_obj["key"]
+                    "value": ref_obj[key]
                 })
 
         self._connection.commit()
@@ -92,6 +99,20 @@ class ReferenceRepository:
 
         rows = cursor.fetchall()
         return list(map(parse_ref_object_from_row, rows))
+
+    def get_reference_entries(self, ref_id):
+        cursor = self._connection.cursor()
+
+        sql = "SELECT B.type_name, A.value from reference_entries A, field_types B \
+            WHERE A.ref_id == (:ref_id) AND A.value IS NOT NULL AND A.type_id == B.id; "
+
+        cursor.execute(sql, {
+            "ref_id": ref_id
+        })
+
+        rows = cursor.fetchall()
+        list_of_entries = list(map(parse_entry, rows))
+        return reduce(lambda a, b: {**a, **b}, list_of_entries)
 
 
 reference_repository = ReferenceRepository(get_database_connection())
