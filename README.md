@@ -2,6 +2,8 @@
 
 ![Workflow badge](https://github.com/mleikas/sweetsixteen/workflows/CI/badge.svg)
 
+[![codecov](https://codecov.io/gh/mleikas/sweetsixteen/branch/main/graph/badge.svg?token=ywnp6wfOY9)](https://codecov.io/gh/mleikas/sweetsixteen)
+
 ## Backlog
 
 [Linkki backlogeihin](https://docs.google.com/spreadsheets/d/1WaXkt1bA5ho_e-IfcfUK9stK1fLb32ynSzqMo0fLLdM/edit?usp=sharing)
