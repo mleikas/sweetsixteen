@@ -11,6 +11,7 @@ pylint = "^2.15.6"
 pytest = "^7.2.0"
 invoke = "^1.7.3"
 robotframework = "^6.0.1"
+bibtexparser = "^1.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

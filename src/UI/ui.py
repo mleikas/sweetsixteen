@@ -1,5 +1,5 @@
-
 from services.reference_service import ReferenceService
+from services.parser import run as parse
 from UI.UILibrary import UILibrary
 
 class UI:
@@ -15,7 +15,8 @@ class UI:
             print("(2) Get available reference types")
             print("(3) Add reference")
             print("(4) Show all references in database")
-            print("(5) Delete reference from database\n")
+            print("(5) Delete reference from database")
+            print("(6) Show references in bibtex format\n")
             print("(Other) End program\n")
             cmd = input("Command: ")
 
@@ -57,6 +58,9 @@ class UI:
                 # Show e.g. author, title, year and ask user to verify
                 self.ref_service.delete_reference(ref_key)
                 print("Reference was removed from database.")
+
+            if cmd == "6":
+                parse()
 
             if cmd not in ["1", "2", "3", "4", "5"]:
                 break
