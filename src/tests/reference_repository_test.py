@@ -11,6 +11,11 @@ class TestReferenceRepository(unittest.TestCase):
         self._ref_repository.add_reference({"key": "BOOK123", "type_id": 1})
         self._ref_repository.add_reference({"key": "BOOK124", "type_id": 1})
 
+    def test_get_all_reference_type_from_database(self):
+        types_in_database = self._ref_repository.get_ref_type_names()
+        ref_types = ['book', 'article', 'misc', 'phdthesis', 'incollection']
+        self.assertListEqual(types_in_database, ref_types)
+
     def test_get_all_references_from_database(self):
         references = self._ref_repository.get_all()
 
@@ -29,6 +34,7 @@ class TestReferenceRepository(unittest.TestCase):
         self.assertEqual(len(ref_list), 3)
 
     def test_adding_book_entries(self):
+        ref_data = {"type_id": 1, "ref_key": "Book321"}
         book_entries = {
             "address": "Osoite123",
             "author": "Authori",
@@ -46,7 +52,8 @@ class TestReferenceRepository(unittest.TestCase):
             "author_lastname": "Authorinen"
         }
 
-        self._ref_repository.add_reference_entries(book_entries, 1)
+        self._ref_repository.add_reference_entries(
+            {**ref_data, **book_entries}, 1)
         result = self._ref_repository.get_reference_entries(1)
 
         self.assertEqual(result["address"], "Osoite123")
