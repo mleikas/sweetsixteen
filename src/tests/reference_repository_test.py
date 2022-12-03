@@ -22,6 +22,11 @@ class TestReferenceRepository(unittest.TestCase):
         self.assertEqual(references[0]["ref_key"], "BOOK123")
         self.assertEqual(references[1]["ref_key"], "BOOK124")
 
+    def test_get_reference_with_key_from_database(self):
+        reference = self._ref_repository.get_reference_with_key("BOOK123")
+
+        self.assertEqual(reference["ref_key"], "BOOK123")
+
     def test_adding_book_reference_with_valid_data_adds_book_to_database(self):
         new_book = {
             "key": "auth2022ABBT",
@@ -34,7 +39,7 @@ class TestReferenceRepository(unittest.TestCase):
         self.assertEqual(len(ref_list), 3)
 
     def test_adding_book_entries(self):
-        ref_data = {"type_id": 1, "ref_key": "Book321"}
+        ref_data = {"type_id": 1, "ref_key": "BOOK123"}
         book_entries = {
             "address": "Osoite123",
             "author": "Authori",
