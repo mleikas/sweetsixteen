@@ -20,7 +20,7 @@ class ReferenceService():
         rr.add_reference(reference)
         ref_key = rr.check_ref_key_exists(reference["ref_key"])
         return rr.add_reference_entries(reference)
-    
+
     def delete_reference(self, ref_key: str):
         rr.delete_reference(ref_key)
 
@@ -34,6 +34,9 @@ class ReferenceService():
                     new_ref[key] = ref[key]
             new_references.append(new_ref)
         return new_references
+
+    def get_reference_entries(self):
+        return rr.get_reference_entries()
 
     def submit_book_reference(self, book: dict):
         rr.add_reference(book)

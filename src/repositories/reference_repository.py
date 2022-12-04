@@ -70,7 +70,7 @@ class ReferenceRepository:
 
         self._connection.commit()
 
-    def add_reference(self, ref_obj, type_name="book"):
+    def add_reference(self, ref_obj, type_name):
         type_id = self.get_ref_type_id_by_name(type_name)
 
         sql = "INSERT INTO latex_references \

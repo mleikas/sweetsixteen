@@ -33,7 +33,7 @@ class UI:
                     key = input("Which reference type? (book/misc/article/phdthesis/incollection): ")
                 ref_dict = self.ref_query(key)
                 self.ref_service.validate_book_input(ref_dict)
-                self.ref_service.submit_book_reference(ref_dict)
+                self.ref_service.submit_book_reference(ref_dict, key)
 
             if cmd == "3":
                 all_references = self.ref_service.get_all_references()
