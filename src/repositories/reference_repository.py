@@ -82,6 +82,7 @@ class ReferenceRepository:
             "r_key": ref_obj["key"]
         })
         self._connection.commit()
+        return self._cursor.lastrowid
 
     def delete_reference(self, r_key: str):
         sql = "DELETE FROM latex_references WHERE ref_key=:r_key"
