@@ -1,4 +1,3 @@
-from sqlite3 import IntegrityError
 from utils.database_connection import get_database_connection
 from functools import reduce
 
@@ -112,9 +111,10 @@ class ReferenceRepository:
         })
 
         rows = self._cursor.fetchall()
-        list_of_entries = map(parse_entry, rows)
-        return reduce(lambda a, b: {**a, **b}, list_of_entries)
-
+        if rows:
+            list_of_entries = map(parse_entry, rows)
+            return reduce(lambda a, b: {**a, **b}, list_of_entries)
+        return None
 
 reference_repository = ReferenceRepository(get_database_connection())
 test_reference_repository = ReferenceRepository(
