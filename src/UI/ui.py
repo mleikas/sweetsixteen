@@ -20,8 +20,6 @@ class UI:
             print("(Other) End program\n")
             cmd = input("Command: ")
 
-
-
             if cmd == "1":
                 ref_types = self.ref_service.get_reference_type_names()
                 for r_type in ref_types:
@@ -35,7 +33,6 @@ class UI:
                 ref_dict = self.ref_query(key)
                 self.ref_service.validate_book_input(ref_dict)
                 self.ref_service.submit_book_reference(ref_dict, key)
-
                 next_input()
 
             if cmd == "3":
