@@ -1,5 +1,4 @@
 
-
 from repositories.reference_repository import reference_repository as rr
 
 
@@ -10,9 +9,6 @@ class UserInputError(Exception):
 class ReferenceService():
     def __init__(self):
         pass
-
-    def add_reference_type(self, name):
-        return rr.add_ref_type(name)
 
     def check_reference_key_exists(self, key_candidate):
         return rr.check_ref_key_exists(key_candidate)

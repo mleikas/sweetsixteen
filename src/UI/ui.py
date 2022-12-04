@@ -11,29 +11,20 @@ class UI:
     def query(self):
 
         while True:
-            print("\n(1) Add reference type")
-            print("(2) Get available reference types")
-            print("(3) Add reference")
-            print("(4) Show all references in database")
-            print("(5) Delete reference from database")
-            print("(6) Show references in bibtex format\n")
+            print("\n(1) Get available reference types")
+            print("(2) Add reference")
+            print("(3) Show all references in database")
+            print("(4) Show references in bibtex format")
+            print("(5) Delete reference from database\n")
             print("(Other) End program\n")
             cmd = input("Command: ")
 
             if cmd == "1":
-                name = input("Reference type name: ")
-                new_ref_id = self.ref_service.add_reference_type(name)
-                if new_ref_id:
-                    print(f"\nAdded reference type: {name}")
-                else:
-                    print(f"\n{name} already exists!")
-
-            if cmd == "2":
                 ref_types = self.ref_service.get_reference_type_names()
                 for r_type in ref_types:
                     print(r_type)
 
-            if cmd == "3":
+            if cmd == "2":
                 ''' book_dict = self.book()
                     self.ref_service.validate_book_input(book_dict)
                     self.ref_service.submit_book_reference(book_dict) '''
@@ -44,7 +35,7 @@ class UI:
                 self.ref_service.validate_book_input(ref_dict)
                 self.ref_service.submit_book_reference(ref_dict)
 
-            if cmd == "4":
+            if cmd == "3":
                 all_references = self.ref_service.get_all_references()
                 print("\n*** References in database ***")
                 for reference in all_references:
@@ -52,6 +43,9 @@ class UI:
                         print(f"{key}: {value}")
                     print("---")
 
+            if cmd == "4":
+                parse()
+            
             if cmd == "5":
                 ref_key = input("Enter citation key of reference to delete: ")
                 # TODO: verify that cite key exists
@@ -59,12 +53,8 @@ class UI:
                 self.ref_service.delete_reference(ref_key)
                 print("Reference was removed from database.")
 
-            if cmd == "6":
-                parse()
-
             if cmd not in ["1", "2", "3", "4", "5"]:
                 break
-
 
     def ref_query(self, key):
         keys=self.ui_library.keys(key)
