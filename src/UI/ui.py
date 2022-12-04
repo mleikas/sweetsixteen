@@ -1,6 +1,6 @@
 import os
 from services.reference_service import ReferenceService
-from services.parser import run as parse
+from services.parser import parse
 
 class UI:
 

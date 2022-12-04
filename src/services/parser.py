@@ -1,9 +1,10 @@
 from repositories.reference_repository import reference_repository as rr
 from bibtexparser import bibdatabase, dump, dumps
 
-database = bibdatabase.BibDatabase()
 
-def run():
+
+def parse():
+    database = bibdatabase.BibDatabase()
     all_references = rr.get_all()
     for reference in all_references:
         del reference["id"]
