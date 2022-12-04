@@ -81,7 +81,6 @@ class ReferenceRepository:
             "t_id": type_id,
             "r_key": ref_obj["key"]
         })
-
         self._connection.commit()
 
     def delete_reference(self, r_key: str):

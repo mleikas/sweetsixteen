@@ -1,5 +1,7 @@
+import os
 from services.reference_service import ReferenceService
 from services.parser import run as parse
+
 class UI:
 
     def __init__(self):
@@ -9,6 +11,7 @@ class UI:
     def query(self):
 
         while True:
+            os.system('clear')
             print("\n(1) Get available reference types")
             print("(2) Add reference")
             print("(3) Show all references in database")
@@ -17,21 +20,23 @@ class UI:
             print("(Other) End program\n")
             cmd = input("Command: ")
 
+
+
             if cmd == "1":
                 ref_types = self.ref_service.get_reference_type_names()
                 for r_type in ref_types:
                     print(r_type)
+                next_input()
 
             if cmd == "2":
-                ''' book_dict = self.book()
-                    self.ref_service.validate_book_input(book_dict)
-                    self.ref_service.submit_book_reference(book_dict) '''
                 key=''
                 while key not in ['book', 'misc', 'article', 'phdthesis', 'incollection']:
                     key = input("Which reference type? (book/misc/article/phdthesis/incollection): ")
                 ref_dict = self.ref_query(key)
                 self.ref_service.validate_book_input(ref_dict)
                 self.ref_service.submit_book_reference(ref_dict, key)
+
+                next_input()
 
             if cmd == "3":
                 all_references = self.ref_service.get_all_references()
@@ -40,19 +45,23 @@ class UI:
                     for key, value in reference.items():
                         print(f"{key}: {value}")
                     print("---")
+                next_input()
 
             if cmd == "4":
                 parse()
-            
+                next_input()
+
             if cmd == "5":
                 ref_key = input("Enter citation key of reference to delete: ")
                 # TODO: verify that cite key exists
                 # Show e.g. author, title, year and ask user to verify
                 self.ref_service.delete_reference(ref_key)
                 print("Reference was removed from database.")
+                next_input()
 
             if cmd not in ["1", "2", "3", "4", "5"]:
                 break
+
 
     def ref_query(self, key):
         keys=self.ui_library.keys(key)
@@ -116,3 +125,7 @@ class UIData:
             'month',
             'note']
             return keys
+
+def next_input():
+    print()
+    input("Press any key to continue...")

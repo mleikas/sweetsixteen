@@ -38,8 +38,8 @@ class ReferenceService():
     def get_reference_entries(self):
         return rr.get_reference_entries()
 
-    def submit_book_reference(self, book: dict):
-        rr.add_reference(book)
+    def submit_book_reference(self, book: dict, type_name):
+        rr.add_reference(book, type_name)
 
     def check_if_empty(self, input):
         if input == "":
@@ -60,6 +60,5 @@ class ReferenceService():
             raise UserInputError("Publisher required!")
         if book["year"] == "":
             raise UserInputError("Year required!")
-
 
 reference_service = ReferenceService()
