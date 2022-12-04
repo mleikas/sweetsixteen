@@ -1,12 +1,10 @@
 from services.reference_service import ReferenceService
 from services.parser import run as parse
-from UI.UILibrary import UILibrary
-
 class UI:
 
     def __init__(self):
         self.ref_service = ReferenceService()
-        self.ui_library=UILibrary()
+        self.ui_library=UIData()
 
     def query(self):
 
@@ -73,87 +71,48 @@ class UI:
             if i in ['author', 'editor', 'year', 'title', 'publisher', 'year', 'key']:
                 answer=''
                 while answer=='':
-                    answer=input(self.ui_library.questions_dict[i])
+                    answer=input(self.ui_library.questions_dict[i] + '(required): ')
 
             else:
-                answer=input(self.ui_library.questions_dict[i])
+                answer=input(self.ui_library.questions_dict[i] + '(optional): ')
             ref_dict[i]=answer
         return ref_dict
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        '''key = ''
-        author_or_editor = 0
-        author = ''
-        editor = ''
-        title = ''
-        publisher = ''
-        year = ''
-        while key == '':
-            key_candidate = input('Citation key: ')
-            if not self.ref_service.check_reference_key_exists(key_candidate):
-                key = key_candidate
-            else:
-                print("That citation key is already in use. Choose another one.")
-        while author_or_editor not in ['1', '2']:
-            author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
-        if author_or_editor == '1':
-            while author == '':
-                author = input("Book's author: ")
-        elif author_or_editor == '2':
-            while editor == '':
-                editor = input("Book's editor: ")
-        while title == '':
-            title = input("Book's title: ")
-        while publisher == '':
-            publisher = input("Book's publisher: ")
-        while year == '':
-            year = input("Publishing year: ")
-        volume = input("Book's volume/number(optional): ")
-        series = input("Book's series(optional): ")
-        address = input("Book's address(optional): ")
-        edition = input("Book's edition(optional): ")
-        month = input("Publishing month(optional): ")
-        note = input("Book's note(optional): ")
-        book_dict = {
-            'key': key,
-            'author': author,
-            'editor': editor,
-            'title': title,
-            'publisher': publisher,
-            'year': year,
-            'volume': volume,
-            'series': series,
-            'address': address,
-            'edition': edition,
-            'month': month,
-            'note': note,
+       
+class UIData:
+    def __init__(self) -> None:
+        self.questions_dict={
+            'key':'Citation key ',
+            'author':'Author ',
+            'editor':'Editor ',
+            'title':'Title ',
+            'publisher':'Publishe ',
+            'year':'Year ',
+            'volume':'Volume ',
+            'series':'Series ',
+            'address':'Address ',
+            'edition':'Edition ',
+            'month':'Month ',
+            'note':'Note ',
+            'number':'Number ',
+            'type':'Type ',
+            'school':'School ',
+            'booktitle':"Book title ",
+            'howpublished': 'How published ',
+            'pages': 'Pages '
         }
-        return book_dict'''
+
+    def keys(self, key):
+        if key=="book":
+            keys=['key',
+            'author',
+            'editor',
+            'title',
+            'publisher',
+            'year',
+            'volume',
+            'series',
+            'address',
+            'edition',
+            'month',
+            'note']
+            return keys
