@@ -59,7 +59,7 @@ class UI:
                 print("Reference was removed from database.")
                 next_input()
 
-            if cmd not in ["1", "2", "3", "4", "5"]:
+            if cmd not in ["1", "2", "3", "4", "5", "6"]:
                 break
 
 
@@ -77,7 +77,13 @@ class UI:
             ref_dict['author']=''
 
         for i in keys:
-            if i in ['author', 'editor', 'year', 'title', 'publisher', 'year', 'key']:
+            if i == 'author' or i=='editor':
+                answer=''
+                while answer=='':
+                    surname=input(self.ui_library.questions_dict[i][0] + '(required): ')
+                    first_name=input(self.ui_library.questions_dict[i][1] + '(required): ')
+                    answer=f'{surname}_{first_name}'
+            elif i in ['year', 'title', 'publisher', 'year', 'key']:
                 answer=''
                 while answer=='':
                     answer=input(self.ui_library.questions_dict[i] + '(required): ')
@@ -91,10 +97,10 @@ class UIData:
     def __init__(self) -> None:
         self.questions_dict={
             'key':'Citation key ',
-            'author':'Author ',
+            'author':('Surname ', 'First name'),
             'editor':'Editor ',
             'title':'Title ',
-            'publisher':'Publishe ',
+            'publisher':'Publisher ',
             'year':'Year ',
             'volume':'Volume ',
             'series':'Series ',

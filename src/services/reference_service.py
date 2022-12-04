@@ -13,6 +13,9 @@ class ReferenceService():
     def check_reference_key_exists(self, key_candidate):
         return rr.check_ref_key_exists(key_candidate)
 
+    def get_ref_keys(self, ref_id):
+        return rr.get_reference_entries(ref_id)
+
     def get_reference_type_names(self):
         return rr.get_ref_type_names()
 
