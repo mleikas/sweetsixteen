@@ -19,9 +19,8 @@ class ReferenceService():
     def get_reference_type_names(self):
         return rr.get_ref_type_names()
 
-    def add_reference(self, reference):
-        rr.add_reference(reference)
-        ref_id = rr.get_reference_with_key()[0]
+    def add_reference(self, reference, ref_type):
+        ref_id = rr.add_reference(reference, ref_type)
         return rr.add_reference_entries(reference, ref_id)
     
     def delete_reference(self, ref_key: str):
