@@ -8,8 +8,8 @@ class TestReferenceRepository(unittest.TestCase):
         # initilizes the database and inserts two references into the database
         initialize_test_database()
         self._ref_repository = ref_repository
-        self._ref_repository.add_reference({"key": "BOOK123", "type_id": 1})
-        self._ref_repository.add_reference({"key": "BOOK124", "type_id": 1})
+        self._ref_repository.add_reference({"key": "BOOK123", "type_id": 1}, "book")
+        self._ref_repository.add_reference({"key": "BOOK124", "type_id": 1}, "book")
 
     def test_get_all_reference_type_from_database(self):
         types_in_database = self._ref_repository.get_ref_type_names()
@@ -33,7 +33,7 @@ class TestReferenceRepository(unittest.TestCase):
             "type_id": 1
         }
 
-        self._ref_repository.add_reference(new_book)
+        self._ref_repository.add_reference(new_book, "book")
 
         ref_list = self._ref_repository.get_all()
         self.assertEqual(len(ref_list), 3)
@@ -63,6 +63,57 @@ class TestReferenceRepository(unittest.TestCase):
 
         self.assertEqual(result["address"], "Osoite123")
         self.assertDictEqual(book_entries, result)
+
+    def test_deleting_reference_removes_reference_info_from_latex_references_table(self):
+        ref_info = {
+            "key": "auth1973",
+            "type_id": 1,
+        }
+        
+        self._ref_repository.add_reference(ref_info, "book")
+
+        self._ref_repository.delete_reference("auth1973")
+        result = self._ref_repository.get_all()
+
+        self.assertEqual(len(result), 2)
+        for stored_ref in result:
+            self.assertNotEqual(stored_ref["ref_key"], "auth1973")
+
+    def test_deleting_reference_removes_all_related_data_from_reference_entries_table(self):
+        ref_info = {
+            "key": "auth1973",
+            "type_id": 1,
+        }
+        
+        ref_id = self._ref_repository.add_reference(ref_info, "book")
+        
+        ref_data = {"type_id": 1, "ref_key": "auth1973"}
+        book_entries = {
+            "address": "Book Lane 1",
+            "author": "Annie Author",
+            "edition": "1",
+            "editor": "Eddie Editor",
+            "month": "January",
+            "note": "This is a note",
+            "number": "4",
+            "publisher": "Publisher Publishing Ltd",
+            "series": "Series?",
+            "title": "The Best Book Ever",
+            "volume": "2",
+            "year": "1979",
+            "author_firstname": "Annie",
+            "author_lastname": "Author"
+        }
+
+        self._ref_repository.add_reference_entries(
+            {**ref_data, **book_entries},
+            ref_id
+        )
+
+        self._ref_repository.delete_reference("auth1973")
+        result = self._ref_repository.get_reference_entries(ref_id)
+
+        self.assertEqual(result, None)
 
     def test_check_for_existing_cite_key_returns_cite_key_if_key_exists(self):
         returned_key = self._ref_repository.check_ref_key_exists("BOOK123")
