@@ -59,43 +59,57 @@ class UI:
                 break
 
             next_input()
+    
+    def fields(self, type_name):
+        fields=self.ref_service.get_fields_by_type_name(type_name)
+        return fields
 
-    def ref_query(self, key):
-        keys=self.ui_library.keys(key)
+
+
+    def ref_query(self, type_name):
+        fields=self.fields(type_name)
         author_or_editor=''
         ref_dict={}
-        while author_or_editor not in ['1', '2']:
-            author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
-        if author_or_editor == '1':
-            keys.remove('editor')
-            ref_dict['editor']=''
-        elif author_or_editor == '2':
-            keys.remove('author')
-            ref_dict['author']=''
+        key=input(self.ui_library.questions_dict['key'] + '(required): ')
+        while self.ref_service.check_reference_key_exists(key)!=None:
+            key=input(self.ui_library.questions_dict['key'] + '(required): ')
+        ref_dict['key']=key
+        if 'author_firstname' in fields.keys() and 'editor' in fields.keys():
+            while author_or_editor not in ['1', '2']:
+                author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
+            if author_or_editor == '1':
+                fields.pop('editor')
+                ref_dict['editor']=''
+            elif author_or_editor == '2':
+                fields.pop('author_firstname')
+                fields.pop('author_lastname')
+                ref_dict['author_firstname']=''
+                ref_dict['author_lastname']=''
 
-        for i in keys:
-            if i == 'author' or i=='editor':
+        for field, req in fields.items():
+                
+            if req==1:
                 answer=''
                 while answer=='':
-                    surname=input(self.ui_library.questions_dict[i][0] + '(required): ')
-                    first_name=input(self.ui_library.questions_dict[i][1] + '(required): ')
-                    answer=f'{surname}_{first_name}'
-            elif i in ['year', 'title', 'publisher', 'year', 'key']:
-                answer=''
-                while answer=='':
-                    answer=input(self.ui_library.questions_dict[i] + '(required): ')
+                    answer=input(self.ui_library.questions_dict[field] + '(required): ')
 
             else:
-                answer=input(self.ui_library.questions_dict[i] + '(optional): ')
-            ref_dict[i]=answer
+                answer=input(self.ui_library.questions_dict[field] + '(optional): ')
+            if field == 'year' and answer.isnumeric()==False:
+                while answer.isnumeric()==False:
+                    answer=input(self.ui_library.questions_dict[field] + '(only numbers): ')
+
+            ref_dict[field]=answer
         return ref_dict
        
 class UIData:
     def __init__(self) -> None:
         self.questions_dict={
             'key':'Citation key ',
-            'author':('Surname ', 'First name'),
-            'editor':('Surname ', 'First name'),
+            'author': 'Author ',
+            'author_firstname': 'First name ',
+            'author_lastname': 'Last name',
+            'editor':('Last name ', 'First name '),
             'title':'Title ',
             'publisher':'Publisher ',
             'year':'Year ',
@@ -113,8 +127,16 @@ class UIData:
             'pages': 'Pages '
         }
 
-    def keys(self, key):
-        if key=="book":
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        '''if key=="book":
             keys=['key',
             'author',
             'editor',
@@ -127,7 +149,7 @@ class UIData:
             'edition',
             'month',
             'note']
-            return keys
+            return keys'''
 
 def next_input():
     print()

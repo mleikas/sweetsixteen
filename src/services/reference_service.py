@@ -16,6 +16,13 @@ class ReferenceService():
     def get_ref_keys(self, ref_id):
         return rr.get_reference_entries(ref_id)
 
+    def get_fields_by_type_name(self, type_name):
+        references=rr.get_field_types_by_type_name(type_name)
+        new_references={}
+        for ref in references:
+            new_references[ref['type_name']]=ref["required"]
+        return new_references
+
     def get_reference_type_names(self):
         return rr.get_ref_type_names()
 
@@ -50,7 +57,7 @@ class ReferenceService():
     def validate_book_input(self, book: dict):
         """checks for missing but mandatory info as well as input length
         """
-        if book["author"] == "" and book["editor"] == "":
+        '''if book["author"] == "" and book["editor"] == "":
             raise UserInputError("Author or editor required!")
         if len(book["author"]) > 100 or len(book["editor"]) > 100:
             raise UserInputError("Author or editor name too long.")
@@ -61,6 +68,7 @@ class ReferenceService():
         if book["publisher"] == "":
             raise UserInputError("Publisher required!")
         if book["year"] == "":
-            raise UserInputError("Year required!")
+            raise UserInputError("Year required!")'''
+        pass
 
 reference_service = ReferenceService()

@@ -36,7 +36,7 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("publisher", 
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("series", 1, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("title", 1, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("volume", 1, 0);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 1, 0);
+INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 1, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 1, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 1, 1);
 
