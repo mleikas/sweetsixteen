@@ -27,7 +27,7 @@ class ReferenceService():
         rr.delete_reference(ref_key)
 
     def get_all_references(self):
-        references = rr.get_all()
+        references = rr.get_all_references_with_entries()
         new_references = []
         for ref in references:
             new_ref = {}

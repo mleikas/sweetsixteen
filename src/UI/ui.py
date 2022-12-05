@@ -24,7 +24,6 @@ class UI:
                 ref_types = self.ref_service.get_reference_type_names()
                 for r_type in ref_types:
                     print(r_type)
-                next_input()
 
             if cmd == "2":
                 key=''
@@ -32,8 +31,8 @@ class UI:
                     key = input("Which reference type? (book/misc/article/phdthesis/incollection): ")
                 ref_dict = self.ref_query(key)
                 self.ref_service.validate_book_input(ref_dict)
-                self.ref_service.submit_book_reference(ref_dict, key)
-                next_input()
+                self.ref_service.add_reference(ref_dict, key)
+
 
             if cmd == "3":
                 all_references = self.ref_service.get_all_references()
@@ -42,11 +41,11 @@ class UI:
                     for key, value in reference.items():
                         print(f"{key}: {value}")
                     print("---")
-                next_input()
+
 
             if cmd == "4":
                 parse()
-                next_input()
+
 
             if cmd == "5":
                 ref_key = input("Enter citation key of reference to delete: ")
@@ -54,11 +53,12 @@ class UI:
                 # Show e.g. author, title, year and ask user to verify
                 self.ref_service.delete_reference(ref_key)
                 print("Reference was removed from database.")
-                next_input()
 
-            if cmd not in ["1", "2", "3", "4", "5", "6"]:
+
+            if cmd not in ["1", "2", "3", "4", "5"]:
                 break
 
+            next_input()
 
     def ref_query(self, key):
         keys=self.ui_library.keys(key)
@@ -95,7 +95,7 @@ class UIData:
         self.questions_dict={
             'key':'Citation key ',
             'author':('Surname ', 'First name'),
-            'editor':'Editor ',
+            'editor':('Surname ', 'First name'),
             'title':'Title ',
             'publisher':'Publisher ',
             'year':'Year ',
@@ -131,4 +131,4 @@ class UIData:
 
 def next_input():
     print()
-    input("Press any key to continue...")
+    input("Press enter to continue...")
