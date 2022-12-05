@@ -79,6 +79,8 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 4, 1)
 INSERT INTO reference_types (type_name) VALUES ("incollection");
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("address", 5, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author", 5, 1);
+INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 5, 1);
+INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 5, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("booktitle", 5, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("chapter", 5, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("edition", 5, 0);

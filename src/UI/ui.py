@@ -74,28 +74,29 @@ class UI:
         while self.ref_service.check_reference_key_exists(key)!=None:
             key=input(self.ui_library.questions_dict['key'] + '(required): ')
         ref_dict['key']=key
-        if 'author_firstname' in fields.keys() and 'editor' in fields.keys():
+        if 'author' in fields.keys() and 'editor' in fields.keys():
             while author_or_editor not in ['1', '2']:
                 author_or_editor = input('Press 1 if your book has an author and 2 if an editor: ')
             if author_or_editor == '1':
                 fields.pop('editor')
                 ref_dict['editor']=''
             elif author_or_editor == '2':
+                fields.pop('author')
                 fields.pop('author_firstname')
                 fields.pop('author_lastname')
+                ref_dict['author']=''
                 ref_dict['author_firstname']=''
                 ref_dict['author_lastname']=''
 
-        for field, req in fields.items():
-                
+        for field, req in fields.items(): 
             if req==1:
                 answer=''
                 while answer=='':
                     answer=input(self.ui_library.questions_dict[field] + '(required): ')
-
             else:
                 answer=input(self.ui_library.questions_dict[field] + '(optional): ')
-            if field == 'year' and answer.isnumeric()==False:
+
+            if field == 'year' and answer.isnumeric()==False and answer != '':
                 while answer.isnumeric()==False:
                     answer=input(self.ui_library.questions_dict[field] + '(only numbers): ')
 
@@ -109,15 +110,17 @@ class UIData:
             'author': 'Author ',
             'author_firstname': 'First name ',
             'author_lastname': 'Last name',
-            'editor':('Last name ', 'First name '),
+            'editor':'Editor ',
             'title':'Title ',
             'publisher':'Publisher ',
             'year':'Year ',
+            'journal':'Journal ',
             'volume':'Volume ',
             'series':'Series ',
             'address':'Address ',
             'edition':'Edition ',
             'month':'Month ',
+            'chapter':'Chapter ',
             'note':'Note ',
             'number':'Number ',
             'type':'Type ',
