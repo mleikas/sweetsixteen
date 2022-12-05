@@ -89,7 +89,7 @@ class ReferenceRepository:
 
         self._connection.commit()
 
-    def get_all(self):
+    def get_all_references(self):
         self._cursor.execute("SELECT * from latex_references")
 
         rows = self._cursor.fetchall()
@@ -114,7 +114,17 @@ class ReferenceRepository:
         if rows:
             list_of_entries = map(parse_entry, rows)
             return reduce(lambda a, b: {**a, **b}, list_of_entries)
-        return None
+        return {}
+
+    def get_all_references_with_entries(self):
+        reference_list = self.get_all_references()
+        return list(map(
+            lambda ref_object: {
+                **ref_object,
+                **self.get_reference_entries(ref_object["id"])
+            },
+            reference_list))
+
 
 reference_repository = ReferenceRepository(get_database_connection())
 test_reference_repository = ReferenceRepository(
