@@ -1,6 +1,6 @@
 import os
-from services.reference_service import ReferenceService
-from services.parser import parse
+from src.services.reference_service import ReferenceService
+from src.services.parser import parse
 
 class UI:
 

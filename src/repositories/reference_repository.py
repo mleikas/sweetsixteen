@@ -1,4 +1,4 @@
-from utils.database_connection import get_database_connection
+from src.utils.database_connection import get_database_connection
 from functools import reduce
 
 

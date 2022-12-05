@@ -12,6 +12,7 @@ pytest = "^7.2.0"
 invoke = "^1.7.3"
 robotframework = "^6.0.1"
 bibtexparser = "^1.4.0"
+mock = "^4.0.3"
 
 
 [tool.poetry.group.dev.dependencies]
