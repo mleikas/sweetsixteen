@@ -1,9 +1,9 @@
-from ui import UI #this raises an error
+from UI.ui import UI
 import mock
 
 class UILibrary:
-    def __init__(self, UI:UI):
-        self.ui = UI
+    def __init__(self):
+        self.ui = UI()
 
     def start_program():
         """use this for starting a query or the main program if necessary"""
