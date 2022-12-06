@@ -5,3 +5,6 @@ __pycache__
 *.coverage
 *.pytest_cache
 *.idea
+log.html
+output.xml
+report.html
