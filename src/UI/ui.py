@@ -45,22 +45,20 @@ class UI:
 
             if cmd == "5":
                 ref_key = input("Enter citation key of reference to delete: ")
-                # TODO: verify that cite key exists
-                # Show e.g. author, title, year and ask user to verify
-                self.ref_service.delete_reference(ref_key)
-                print("Reference was removed from database.")
-
+                if self.ref_service.check_reference_key_exists(ref_key):
+                    self.ref_service.delete_reference(ref_key)
+                    print("Reference was deleted from database.")
+                else:
+                    print("No reference with such citation key.")
 
             if cmd not in ["1", "2", "3", "4", "5"]:
                 break
 
             next_input()
-    
+
     def fields(self, type_name):
         fields=self.ref_service.get_fields_by_type_name(type_name)
         return fields
-
-
 
     def ref_query(self, type_name):
         fields=self.fields(type_name)
