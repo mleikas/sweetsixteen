@@ -1,5 +1,5 @@
-from utils.database_connection import get_database_connection
 from functools import reduce
+from utils.database_connection import get_database_connection
 
 
 def parse_ref_type_from_row(row):
@@ -48,7 +48,8 @@ class ReferenceRepository:
 
     def get_field_types_by_type_name(self, type_name:str):
         ref_type_id=self.get_ref_type_id_by_name(type_name)
-        sql = "SELECT type_name, required FROM field_types WHERE ref_type_id=:ref_type_id"
+        sql = "SELECT type_name, required FROM field_types \
+               WHERE ref_type_id=:ref_type_id ORDER BY required DESC"
         self._cursor.execute(sql, {"ref_type_id": ref_type_id})
         rows = self._cursor.fetchall()
         return list(map(parse_ref_object_from_row, rows))
