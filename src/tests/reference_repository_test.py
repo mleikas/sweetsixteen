@@ -150,3 +150,30 @@ class TestReferenceRepository(unittest.TestCase):
     def test_check_for_existing_cite_key_returns_None_if_key_does_not_exist(self):
         returned_key = self._ref_repository.check_ref_key_exists("foobar")
         self.assertIsNone(returned_key)
+    
+    def test_get_ref_type_id_by_name_returns_None_if_no_such_ref_type(self):
+        returned_id = self._ref_repository.get_ref_type_id_by_name("foo")
+        self.assertIsNone(returned_id)
+
+    def test_get_field_types_by_type_name_book_returns_correct_fields(self):
+        field_list = self._ref_repository.get_field_types_by_type_name("book")
+
+        correct_fields = [
+            {"type_name": "author", "required": 1},
+            {"type_name": "editor", "required": 1},
+            {"type_name": "publisher", "required": 1},
+            {"type_name": "title", "required": 1},
+            {"type_name": "year", "required": 1},
+            {"type_name": "author_firstname", "required": 1},
+            {"type_name": "author_lastname", "required": 1},
+            {"type_name": "address", "required": 0},
+            {"type_name": "edition", "required": 0},
+            {"type_name": "month", "required": 0},
+            {"type_name": "note", "required": 0},
+            {"type_name": "number", "required": 0},
+            {"type_name": "series", "required": 0},
+            {"type_name": "volume", "required": 0}
+        ]
+
+        for i in range(0, len(correct_fields)):
+            self.assertEqual(field_list[i], correct_fields[i])
