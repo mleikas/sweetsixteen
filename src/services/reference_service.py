@@ -1,5 +1,5 @@
 
-from src.repositories.reference_repository import reference_repository as rr
+from repositories.reference_repository import reference_repository as rr
 
 
 class UserInputError(Exception):
