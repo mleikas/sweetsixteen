@@ -1,5 +1,28 @@
 from repositories.reference_repository import reference_repository as rr
 
+def organise_references_for_output(references):
+        new_references = []
+        for reference in references:
+            del reference["id"]
+            reference["ID"] = reference.pop("ref_key")
+            reference["ENTRYTYPE"] = reference.pop("type_id")
+            if reference["ENTRYTYPE"] == 1:
+                reference["ENTRYTYPE"] = "book"
+            if reference["ENTRYTYPE"] == 2:
+                reference["ENTRYTYPE"] = "article"
+            if reference["ENTRYTYPE"] == 3:
+                reference["ENTRYTYPE"] = "misc"
+            if reference["ENTRYTYPE"] == 4:
+                reference["ENTRYTYPE"] = "phdthesis"
+            if reference["ENTRYTYPE"] == 5:
+                reference["ENTRYTYPE"] = "incollection"
+            new_ref = {}
+            for key in reference:
+                if reference[key] != "":
+                    new_ref[key] = reference[key]
+            new_references.append(new_ref)
+        return new_references
+
 class UserInputError(Exception):
     pass
 
@@ -31,15 +54,8 @@ class ReferenceService():
         rr.delete_reference(ref_key)
 
     def get_all_references(self):
-        references = rr.get_all_references_with_entries()
-        new_references = []
-        for ref in references:
-            new_ref = {}
-            for key in ref:
-                if ref[key] != "" and key not in ["id", "type_id"]:
-                    new_ref[key] = ref[key]
-            new_references.append(new_ref)
-        return new_references
+        references = organise_references_for_output(rr.get_all_references_with_entries())
+        return references
 
     def get_reference_entries(self):
         return rr.get_reference_entries()
