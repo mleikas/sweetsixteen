@@ -30,9 +30,7 @@ class UI:
                 while key not in ['book', 'misc', 'article', 'phdthesis', 'incollection']:
                     key = input("Which reference type? (book/misc/article/phdthesis/incollection): ")
                 ref_dict = self.ref_query(key)
-                self.ref_service.validate_book_input(ref_dict)
                 self.ref_service.add_reference(ref_dict, key)
-
 
             if cmd == "3":
                 all_references = self.ref_service.get_all_references()
@@ -42,10 +40,8 @@ class UI:
                         print(f"{key}: {value}")
                     print("---")
 
-
             if cmd == "4":
                 parse()
-
 
             if cmd == "5":
                 ref_key = input("Enter citation key of reference to delete: ")
