@@ -1,10 +1,7 @@
-
 from repositories.reference_repository import reference_repository as rr
-
 
 class UserInputError(Exception):
     pass
-
 
 class ReferenceService():
     def __init__(self):
@@ -29,7 +26,7 @@ class ReferenceService():
     def add_reference(self, reference, ref_type):
         ref_id = rr.add_reference(reference, ref_type)
         return rr.add_reference_entries(reference, ref_id)
-    
+
     def delete_reference(self, ref_key: str):
         rr.delete_reference(ref_key)
 
@@ -50,8 +47,8 @@ class ReferenceService():
     def submit_book_reference(self, book: dict, type_name):
         rr.add_reference(book, type_name)
 
-    def check_if_empty(self, input):
-        if input == "":
+    def check_if_empty(self, entry):
+        if entry == "":
             raise UserInputError("Field required!")
 
 reference_service = ReferenceService()

@@ -1,6 +1,5 @@
+from bibtexparser import bibdatabase, dumps
 from repositories.reference_repository import reference_repository as rr
-from bibtexparser import bibdatabase, dump, dumps
-
 
 def filter_empty_values(ref):
     new_ref = {}
@@ -9,7 +8,6 @@ def filter_empty_values(ref):
             new_ref[key] = ref[key]
 
     return new_ref
-                
 
 def parse():
     database = bibdatabase.BibDatabase()

@@ -28,7 +28,9 @@ class UI:
             if cmd == "2":
                 key=''
                 while key not in ['book', 'misc', 'article', 'phdthesis', 'incollection']:
-                    key = input("Which reference type? (book/misc/article/phdthesis/incollection): ")
+                    key = input(
+                        "Which reference type? (book/misc/article/phdthesis/incollection): "
+                        )
                 ref_dict = self.ref_query(key)
                 self.ref_service.add_reference(ref_dict, key)
 
@@ -65,7 +67,7 @@ class UI:
         author_or_editor=''
         ref_dict={}
         key=input(self.ui_library.questions_dict['key'] + '(required): ')
-        while self.ref_service.check_reference_key_exists(key)!=None:
+        while self.ref_service.check_reference_key_exists(key)is not None:
             key=input(self.ui_library.questions_dict['key'] + '(required): ')
         ref_dict['key']=key
         if 'author' in fields.keys() and 'editor' in fields.keys():
@@ -90,8 +92,8 @@ class UI:
             else:
                 answer=input(self.ui_library.questions_dict[field] + '(optional): ')
 
-            if field == 'year' and answer.isnumeric()==False and answer != '':
-                while answer.isnumeric()==False:
+            if field == 'year' and answer.isnumeric() is False and answer != '':
+                while answer.isnumeric() is False:
                     answer=input(self.ui_library.questions_dict[field] + '(only numbers): ')
 
             ref_dict[field]=answer
@@ -124,15 +126,7 @@ class UIData:
             'pages': 'Pages '
         }
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         '''if key=="book":
             keys=['key',
             'author',
