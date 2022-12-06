@@ -84,7 +84,7 @@ class UI:
                 ref_dict['author_firstname']=''
                 ref_dict['author_lastname']=''
 
-        for field, req in fields.items(): 
+        for field, req in fields.items():
             if req==1:
                 answer=''
                 while answer=='':
@@ -98,7 +98,7 @@ class UI:
 
             ref_dict[field]=answer
         return ref_dict
-       
+
 class UIData:
     def __init__(self) -> None:
         self.questions_dict={
