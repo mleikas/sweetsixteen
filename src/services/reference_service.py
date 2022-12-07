@@ -1,28 +1,20 @@
 from repositories.reference_repository import reference_repository as default_ref_repository
 
 
-def organise_references_for_output(references):
-    new_references = []
+def format_references_for_bibtexparser(references:list):
+    formatted_refs = []
     for reference in references:
         del reference["id"]
         reference["ID"] = reference.pop("ref_key")
-        reference["ENTRYTYPE"] = reference.pop("type_id")
-        if reference["ENTRYTYPE"] == 1:
-            reference["ENTRYTYPE"] = "book"
-        if reference["ENTRYTYPE"] == 2:
-            reference["ENTRYTYPE"] = "article"
-        if reference["ENTRYTYPE"] == 3:
-            reference["ENTRYTYPE"] = "misc"
-        if reference["ENTRYTYPE"] == 4:
-            reference["ENTRYTYPE"] = "phdthesis"
-        if reference["ENTRYTYPE"] == 5:
-            reference["ENTRYTYPE"] = "incollection"
-        new_ref = {}
-        for key in reference:
-            if reference[key] != "":
-                new_ref[key] = reference[key]
-        new_references.append(new_ref)
-    return new_references
+        type_id = reference.pop("type_id")
+        entry_type = default_ref_repository.get_ref_type_name_by_id(type_id)
+        reference["ENTRYTYPE"] = entry_type
+        no_empties_ref = {}
+        for key, value in reference.items():
+            if value:
+                no_empties_ref[key] = value
+        formatted_refs.append(no_empties_ref)
+    return formatted_refs
 
 
 class UserInputError(Exception):
@@ -57,7 +49,7 @@ class ReferenceService():
         self.ref_repo.delete_reference(ref_key)
 
     def get_all_references(self):
-        references = organise_references_for_output(
+        references = format_references_for_bibtexparser(
             self.ref_repo.get_all_references_with_entries())
         return references
 

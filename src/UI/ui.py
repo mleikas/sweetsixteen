@@ -1,6 +1,6 @@
 import os
 from services.reference_service import ReferenceService
-from services.parser import parse
+from services.parser import print_in_bibtex_format, write_bibtex_file
 
 
 class UI:
@@ -13,8 +13,9 @@ class UI:
             "1": self.print_type_names,
             "2": self.add_reference,
             "3": self.print_reference_list,
-            "4": parse,
-            "5": self.delete_reference
+            "4": print_in_bibtex_format,
+            "5": self.delete_reference,
+            "6": self.save_refs_to_bibtex_file
         }
 
     def print_menu(self):
@@ -22,7 +23,8 @@ class UI:
         print("(2) Add reference")
         print("(3) Show all references in database")
         print("(4) Show references in bibtex format")
-        print("(5) Delete reference from database\n")
+        print("(5) Delete reference from database")
+        print("(6) Save references as bibtex file\n")
         print("(Other) End program\n")
 
     def print_type_names(self):
@@ -54,6 +56,10 @@ class UI:
             print("Reference was deleted from database.")
         else:
             print("No reference with such citation key.")
+
+    def save_refs_to_bibtex_file(self):
+        write_bibtex_file()
+        print("The file 'bibtex.bib' was saved to the bibtex_files folder")
 
     def query(self):
 

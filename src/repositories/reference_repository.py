@@ -38,6 +38,14 @@ class ReferenceRepository:
             return result["id"]
         return None
 
+    def get_ref_type_name_by_id(self, type_id: int):
+        sql = "SELECT type_name FROM reference_types WHERE id=:t_id"
+        self._cursor.execute(sql, {"t_id": type_id})
+        result = self._cursor.fetchone()
+        if result:
+            return result["type_name"]
+        return None
+
     def get_field_type_id_by_name(self, field_name: str):
         sql = "SELECT id FROM field_types id WHERE type_name=:t_name"
         self._cursor.execute(sql, {"t_name": field_name})
