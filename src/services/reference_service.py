@@ -1,4 +1,4 @@
-from repositories.reference_repository import reference_repository as rr
+from repositories.reference_repository import reference_repository as default_ref_repository
 
 
 def organise_references_for_output(references):
@@ -30,42 +30,42 @@ class UserInputError(Exception):
 
 
 class ReferenceService():
-    def __init__(self):
-        pass
+    def __init__(self, reference_repository=default_ref_repository):
+        self.ref_repo = reference_repository
 
     def check_reference_key_exists(self, key_candidate):
-        return rr.check_ref_key_exists(key_candidate)
+        return self.ref_repo.check_ref_key_exists(key_candidate)
 
     def get_ref_keys(self, ref_id):
-        return rr.get_reference_entries(ref_id)
+        return self.ref_repo.get_reference_entries(ref_id)
 
     def get_fields_by_type_name(self, type_name):
-        references = rr.get_field_types_by_type_name(type_name)
+        references = self.ref_repo.get_field_types_by_type_name(type_name)
         new_references = {}
         for ref in references:
             new_references[ref['type_name']] = ref["required"]
         return new_references
 
     def get_reference_type_names(self):
-        return rr.get_ref_type_names()
+        return self.ref_repo.get_ref_type_names()
 
     def add_reference(self, reference, ref_type):
-        ref_id = rr.add_reference(reference, ref_type)
-        return rr.add_reference_entries(reference, ref_id)
+        ref_id = self.ref_repo.add_reference(reference, ref_type)
+        return self.ref_repo.add_reference_entries(reference, ref_id)
 
     def delete_reference(self, ref_key: str):
-        rr.delete_reference(ref_key)
+        self.ref_repo.delete_reference(ref_key)
 
     def get_all_references(self):
         references = organise_references_for_output(
-            rr.get_all_references_with_entries())
+            self.ref_repo.get_all_references_with_entries())
         return references
 
     def get_reference_entries(self):
-        return rr.get_reference_entries()
+        return self.ref_repo.get_reference_entries()
 
     def submit_book_reference(self, book: dict, type_name):
-        rr.add_reference(book, type_name)
+        self.ref_repo.add_reference(book, type_name)
 
     def check_if_empty(self, entry):
         if entry == "":
