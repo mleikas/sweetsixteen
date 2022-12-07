@@ -72,46 +72,48 @@ class UI:
         fields = self.ref_service.get_fields_by_type_name(type_name)
         return fields
 
+    def discard_author_or_editor(self):
+        selection = ""
+        while selection == "":
+            selection = input(
+                "Press 1 if your reference has an author and 2 if an editor: ")
+        if selection == "1":
+            return "editor"
+        return "author"
+
+    def input_valid(self, field, answer):
+        rules = {
+            "year": lambda x: x.isnumeric()
+        }
+        if field in rules.keys():
+            return rules[field](answer)
+        return True
+
+    def query_entries(self, fields):
+        ref_dict = {}
+        optionality = ["(optional): ", "(required): "]
+        for field, req in fields.items():
+            answer = ""
+            while True:
+                answer = input(
+                    self.ui_library.questions_dict[field] + f'{optionality[req]}')
+                is_valid = self.input_valid(field, answer)
+                if is_valid and answer != "":
+                    break
+                elif is_valid and req != 1:
+                    break
+            if answer != "":
+                ref_dict[field] = answer
+
+        return ref_dict
+
     def ref_query(self, type_name):
         fields = self.fields(type_name)
-        author_or_editor = ''
-        ref_dict = {}
-        key = input(self.ui_library.questions_dict['key'] + '(required): ')
-        while self.ref_service.check_reference_key_exists(key) is not None:
-            key = input(self.ui_library.questions_dict['key'] + '(required): ')
-        ref_dict['key'] = key
-        if 'author' in fields.keys() and 'editor' in fields.keys():
-            while author_or_editor not in ['1', '2']:
-                author_or_editor = input(
-                    'Press 1 if your book has an author and 2 if an editor: ')
-            if author_or_editor == '1':
-                fields.pop('editor')
-                ref_dict['editor'] = ''
-            elif author_or_editor == '2':
-                fields.pop('author')
-                fields.pop('author_firstname')
-                fields.pop('author_lastname')
-                ref_dict['author'] = ''
-                ref_dict['author_firstname'] = ''
-                ref_dict['author_lastname'] = ''
-
-        for field, req in fields.items():
-            if req == 1:
-                answer = ''
-                while answer == '':
-                    answer = input(
-                        self.ui_library.questions_dict[field] + '(required): ')
-            else:
-                answer = input(
-                    self.ui_library.questions_dict[field] + '(optional): ')
-
-            if field == 'year' and answer.isnumeric() is False and answer != '':
-                while answer.isnumeric() is False:
-                    answer = input(
-                        self.ui_library.questions_dict[field] + '(only numbers): ')
-
-            ref_dict[field] = answer
-        return ref_dict
+        if set(["author", "editor"]).issubset(fields.keys()):
+            filtered_key = self.discard_author_or_editor()
+            fields.pop(filtered_key)
+        fields["key"] = 1
+        return self.query_entries(fields)
 
 
 class UIData:
