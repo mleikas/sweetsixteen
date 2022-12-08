@@ -152,11 +152,11 @@ class TestReferenceRepository(unittest.TestCase):
         self.assertIsNone(returned_key)
     
     def test_get_ref_type_id_by_name_returns_None_if_no_such_ref_type(self):
-        returned_id = self._ref_repository.get_ref_type_id_by_name("foo")
+        returned_id = self._ref_repository.get_id_of_reference_type_by_name("foo")
         self.assertIsNone(returned_id)
 
     def test_get_field_types_by_type_name_book_returns_correct_fields(self):
-        field_list = self._ref_repository.get_field_types_by_type_name("book")
+        field_list = self._ref_repository.get_field_types_by_name("book")
 
         correct_fields = [
             {"type_name": "author", "required": 1},

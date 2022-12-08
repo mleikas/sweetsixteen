@@ -30,7 +30,7 @@ class ReferenceRepository:
         rows = self._cursor.fetchall()
         return list(map(parse_ref_type_from_row, rows))
 
-    def get_ref_type_id_by_name(self, type_name: str):
+    def get_id_of_reference_type_by_name(self, type_name: str):
         sql = "SELECT id FROM reference_types id WHERE type_name=:t_name"
         self._cursor.execute(sql, {"t_name": type_name})
         result = self._cursor.fetchone()
@@ -38,7 +38,7 @@ class ReferenceRepository:
             return result["id"]
         return None
 
-    def get_ref_type_name_by_id(self, type_id: int):
+    def get_name_of_reference_type_by_id(self, type_id: int):
         sql = "SELECT type_name FROM reference_types WHERE id=:t_id"
         self._cursor.execute(sql, {"t_id": type_id})
         result = self._cursor.fetchone()
@@ -46,7 +46,7 @@ class ReferenceRepository:
             return result["type_name"]
         return None
 
-    def get_field_type_id_by_name(self, field_name: str):
+    def get_id_of_field_type_by_name(self, field_name: str):
         sql = "SELECT id FROM field_types id WHERE type_name=:t_name"
         self._cursor.execute(sql, {"t_name": field_name})
         result = self._cursor.fetchone()
@@ -54,8 +54,8 @@ class ReferenceRepository:
             return result["id"]
         return None
 
-    def get_field_types_by_type_name(self, type_name:str):
-        ref_type_id=self.get_ref_type_id_by_name(type_name)
+    def get_field_types_by_name(self, type_name:str):
+        ref_type_id=self.get_id_of_reference_type_by_name(type_name)
         sql = "SELECT type_name, required FROM field_types \
                WHERE ref_type_id=:ref_type_id ORDER BY required DESC"
         self._cursor.execute(sql, {"ref_type_id": ref_type_id})
@@ -77,7 +77,7 @@ class ReferenceRepository:
 
         for key in ref_obj:
             if key not in ["type_id", "ref_key"]:
-                field_type_id = self.get_field_type_id_by_name(key)
+                field_type_id = self.get_id_of_field_type_by_name(key)
                 self._cursor.execute(sql, {
                     "type_id": field_type_id,
                     "ref_id": ref_id,
@@ -87,7 +87,7 @@ class ReferenceRepository:
         self._connection.commit()
 
     def add_reference(self, ref_obj, type_name):
-        type_id = self.get_ref_type_id_by_name(type_name)
+        type_id = self.get_id_of_reference_type_by_name(type_name)
 
         sql = "INSERT INTO latex_references \
                (type_id, ref_key) \
