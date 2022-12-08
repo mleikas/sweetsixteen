@@ -60,7 +60,11 @@ class ReferenceRepository:
                WHERE ref_type_id=:ref_type_id ORDER BY required DESC"
         self._cursor.execute(sql, {"ref_type_id": ref_type_id})
         rows = self._cursor.fetchall()
-        return list(map(parse_ref_object_from_row, rows))
+        references=list(map(parse_ref_object_from_row, rows))
+        new_references = {}
+        for ref in references:
+            new_references[ref['type_name']] = ref["required"]
+        return new_references
 
 
     def check_ref_key_exists(self, ref_key: str):

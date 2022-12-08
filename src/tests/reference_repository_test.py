@@ -158,22 +158,21 @@ class TestReferenceRepository(unittest.TestCase):
     def test_get_field_types_by_type_name_book_returns_correct_fields(self):
         field_list = self._ref_repository.get_field_types_by_type_name("book")
 
-        correct_fields = [
-            {"type_name": "author", "required": 1},
-            {"type_name": "editor", "required": 1},
-            {"type_name": "publisher", "required": 1},
-            {"type_name": "title", "required": 1},
-            {"type_name": "year", "required": 1},
-            {"type_name": "author_firstname", "required": 1},
-            {"type_name": "author_lastname", "required": 1},
-            {"type_name": "address", "required": 0},
-            {"type_name": "edition", "required": 0},
-            {"type_name": "month", "required": 0},
-            {"type_name": "note", "required": 0},
-            {"type_name": "number", "required": 0},
-            {"type_name": "series", "required": 0},
-            {"type_name": "volume", "required": 0}
-        ]
+        correct_fields ={
+            "author": 1,
+            "editor": 1,
+            "publisher": 1,
+            "title": 1,
+            "year": 1,
+            "author_firstname": 1,
+            "author_lastname": 1,
+            "address": 0,
+            "edition": 0,
+            "month": 0,
+            "note": 0,
+            "number": 0,
+            "series": 0,
+            "volume": 0}
+        
 
-        for i in range(0, len(correct_fields)):
-            self.assertEqual(field_list[i], correct_fields[i])
+        self.assertEqual(field_list, correct_fields)
