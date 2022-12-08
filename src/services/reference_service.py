@@ -50,6 +50,10 @@ class ReferenceService():
             self.ref_repo.get_all_references_with_entries())
         return references
 
+    def get_all_references_with_id(self):
+        references = self.ref_repo.get_all_references_with_entries()
+        return references
+
     def get_reference_entries(self):
         return self.ref_repo.get_reference_entries()
 

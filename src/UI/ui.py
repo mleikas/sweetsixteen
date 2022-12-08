@@ -15,7 +15,8 @@ class UI:
             "3": self.print_reference_list,
             "4": print_in_bibtex_format,
             "5": self.delete_reference,
-            "6": self.save_refs_to_bibtex_file
+            "6": self.save_refs_to_bibtex_file,
+            "7": self.save_refs_to_bibtex_file_with_selections
         }
 
     def print_menu(self):
@@ -24,7 +25,8 @@ class UI:
         print("(3) Show all references in database")
         print("(4) Show references in bibtex format")
         print("(5) Delete reference from database")
-        print("(6) Save references as bibtex file\n")
+        print("(6) Save references as bibtex file")
+        print("(7) Select references to be saved as bibtex file\n")
         print("(Other) End program\n")
 
     def print_type_names(self):
@@ -60,6 +62,42 @@ class UI:
     def save_refs_to_bibtex_file(self):
         write_bibtex_file()
         print("The file 'bibtex.bib' was saved to the bibtex_files folder")
+
+    def save_refs_to_bibtex_file_with_selections(self):
+
+        all_references_with_id = self.ref_service.get_all_references_with_id()
+        for reference in all_references_with_id:
+            for key, value in reference.items():
+                print(f"{key}: {value}")
+            print("---")
+
+        print("Enter references (id) you want to save")
+        print("Separate with empty spaces\n")
+        validated = False
+        selected_references = ""
+        while not validated:
+            selected_references = input("References: ")
+            for i in selected_references:
+                if i not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]:
+                    validated = False
+                    print("Only numbers and spaces!")
+                    break
+                validated = True
+
+        number_list = []
+        number = ""
+        if " " not in selected_references:
+            number_list = selected_references
+        else:
+            for i in range(0, len(selected_references)):
+                if i <= len(selected_references)-2 and selected_references[i+1]!=" ":
+                    number += str(selected_references[i])
+                else:
+                    number += str(selected_references[i])
+                    number_list.append(number.strip())
+                    number = ""
+
+        write_bibtex_file(number_list)
 
     def query(self):
 
