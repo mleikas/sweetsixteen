@@ -32,11 +32,10 @@ class ReferenceService():
         return self.ref_repo.get_reference_entries(ref_id)
 
     def get_fields_by_type_name(self, type_name):
-        references = self.ref_repo.get_field_types_by_name(type_name)
-        new_references = {}
-        for ref in references:
-            new_references[ref['type_name']] = ref["required"]
-        return new_references
+
+        references = self.ref_repo.get_field_types_by_type_name(type_name)
+        return references
+
 
     def get_reference_type_names(self):
         return self.ref_repo.get_ref_type_names()
@@ -55,9 +54,6 @@ class ReferenceService():
 
     def get_reference_entries(self):
         return self.ref_repo.get_reference_entries()
-
-    def submit_book_reference(self, book: dict, type_name):
-        self.ref_repo.add_reference(book, type_name)
 
     def check_if_empty(self, entry):
         if entry == "":
