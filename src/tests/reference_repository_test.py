@@ -14,9 +14,7 @@ BOOK_ENTRY_DATA = {
     "series": "Series?",
     "title": "Muumit laaksossa",
     "volume": "2",
-    "year": "2022",
-    "author_firstname": "Authori",
-    "author_lastname": "Authorinen"
+    "year": "2022"
 }
 
 
@@ -72,9 +70,7 @@ class TestReferenceRepository(unittest.TestCase):
             "series": "Series?",
             "title": "Muumit laaksossa",
             "volume": "2",
-            "year": "2022",
-            "author_firstname": "Authori",
-            "author_lastname": "Authorinen"
+            "year": "2022"
         }
 
         self._ref_repository.add_reference_entries(
@@ -128,9 +124,7 @@ class TestReferenceRepository(unittest.TestCase):
             "series": "Series?",
             "title": "The Best Book Ever",
             "volume": "2",
-            "year": "1979",
-            "author_firstname": "Annie",
-            "author_lastname": "Author"
+            "year": "1979"
         }
 
         self._ref_repository.add_reference_entries(
@@ -164,8 +158,6 @@ class TestReferenceRepository(unittest.TestCase):
             "publisher": 1,
             "title": 1,
             "year": 1,
-            "author_firstname": 1,
-            "author_lastname": 1,
             "address": 0,
             "edition": 0,
             "month": 0,

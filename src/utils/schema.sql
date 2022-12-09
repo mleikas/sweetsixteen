@@ -37,8 +37,6 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("series", 1, 
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("title", 1, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("volume", 1, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 1, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 1, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 1, 1);
 
 INSERT INTO reference_types (type_name) VALUES ("article");
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author", 2, 1);
@@ -50,14 +48,10 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("pages", 2, 0
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("title", 2, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("volume", 2, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 2, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 2, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 2, 1);
 
 
 INSERT INTO reference_types (type_name) VALUES ("misc");
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author", 3, 0);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 3, 0);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 3, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("howpublished", 3, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("month", 3, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("note", 3, 0);
@@ -67,8 +61,6 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 3, 0)
 INSERT INTO reference_types (type_name) VALUES ("phdthesis");
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("address", 4, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author", 4, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 4, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 4, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("month", 4, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("note", 4, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("school", 4, 1);
@@ -79,8 +71,6 @@ INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("year", 4, 1)
 INSERT INTO reference_types (type_name) VALUES ("incollection");
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("address", 5, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author", 5, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_firstname", 5, 1);
-INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("author_lastname", 5, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("booktitle", 5, 1);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("chapter", 5, 0);
 INSERT INTO field_types (type_name, ref_type_id, required) VALUES ("edition", 5, 0);
