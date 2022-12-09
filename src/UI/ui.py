@@ -38,7 +38,7 @@ class UI:
         key = ''
         while key not in self.reference_types:
             key = input(
-                f"Which reference type {'/'.join(self.reference_types)} ?: "
+                f"Select reference type: {'/'.join(self.reference_types)} "
             )
         ref_dict = self.ref_query(key)
         self.ref_service.add_reference(ref_dict, key)
@@ -90,7 +90,7 @@ class UI:
             number_list = selected_references
         else:
             for i in range(0, len(selected_references)):
-                if i <= len(selected_references)-2 and selected_references[i+1]!=" ":
+                if i <= len(selected_references)-2 and selected_references[i+1] != " ":
                     number += str(selected_references[i])
                 else:
                     number += str(selected_references[i])
@@ -112,7 +112,7 @@ class UI:
             self.commands[cmd]()
             next_input()
 
-    def fields(self, type_name):
+    def get_fields(self, type_name):
         fields = self.ref_service.get_fields_by_type_name(type_name)
         return fields
 
@@ -133,26 +133,41 @@ class UI:
             return rules[field](answer)
         return True
 
-    def query_entries(self, fields):
+    def get_entry_input(self, field, optionality, req):
+        answer = ""
+        while True:
+            answer = input(
+                self.ui_library.questions_dict[field] + f'{optionality[req]}')
+            is_valid = self.input_valid(field, answer)
+            if is_valid and answer != "":
+                break
+            elif is_valid and req != 1:
+                break
+        if answer != "":
+            return answer
+
+    def query_input_multiple_fields(self, field):
+        user_selection = input(
+            f"Do you want to add another {field}? (Y)es / (N)o: ")
+        if user_selection.capitalize() == "Y":
+            return True
+        return False
+
+    def query_entries(self, fields: dict):
         ref_dict = {}
         optionality = ["(optional): ", "(required): "]
+        multiple_authors = False
         for field, req in fields.items():
-            answer = ""
-            while True:
-                answer = input(
-                    self.ui_library.questions_dict[field] + f'{optionality[req]}')
-                is_valid = self.input_valid(field, answer)
-                if is_valid and answer != "":
-                    break
-                elif is_valid and req != 1:
-                    break
-            if answer != "":
-                ref_dict[field] = answer
-
+            ref_dict[field] = self.get_entry_input(field, optionality, req)
+            if field == "author" or field == "editor":
+                ref_dict[field] = [ref_dict[field]]
+                while self.query_input_multiple_fields(field):
+                    ref_dict[field].append(self.get_entry_input(
+                        field, optionality, req))
         return ref_dict
 
     def ref_query(self, type_name):
-        fields = self.fields(type_name)
+        fields = self.get_fields(type_name)
         if set(["author", "editor"]).issubset(fields.keys()):
             filtered_key = self.discard_author_or_editor()
             fields.pop(filtered_key)
@@ -165,8 +180,6 @@ class UIData:
         self.questions_dict = {
             'key': 'Citation key ',
             'author': 'Author ',
-            'author_firstname': 'First name ',
-            'author_lastname': 'Last name',
             'editor': 'Editor ',
             'title': 'Title ',
             'publisher': 'Publisher ',
@@ -186,21 +199,6 @@ class UIData:
             'howpublished': 'How published ',
             'pages': 'Pages '
         }
-
-        '''if key=="book":
-            keys=['key',
-            'author',
-            'editor',
-            'title',
-            'publisher',
-            'year',
-            'volume',
-            'series',
-            'address',
-            'edition',
-            'month',
-            'note']
-            return keys'''
 
 
 def next_input():
