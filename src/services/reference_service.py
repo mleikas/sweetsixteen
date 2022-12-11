@@ -60,6 +60,8 @@ class ReferenceService():
     def check_if_empty(self, entry):
         if entry == "":
             raise UserInputError("Field required!")
+    
+    
 
 
 reference_service = ReferenceService()

@@ -50,6 +50,15 @@ class cursorMock():
     def execute(self, query: str, params: dict):
         return f"Execute called with {query} and params {params}"
 
+class cursorMock2():
+    def fetchone(self):
+        return {"id": "fetchone called"}
+
+    def fetchall(self):
+        return [{"id": "fetchall called"}]
+
+    def execute(self, query: str):
+        return f"Execute called with {query}"
 
 class TestValidation(unittest.TestCase):
     def setUp(self):
@@ -62,6 +71,15 @@ class TestValidation(unittest.TestCase):
             wraps=ReferenceRepository(self.connection_mock))
         self.service = ReferenceService(self.repository_mock)
         '''self.format=format_references_for_bibtexparser()'''
+        self.connection_mock2 = Mock()
+        self.cursor_mock2 = cursorMock2()
+        self.connection_mock2.configure_mock(
+            **{"cursor.return_value": self.cursor_mock2})
+
+        self.repository_mock2 = Mock(
+            wraps2=ReferenceRepository(self.connection_mock2))
+        self.service2 = ReferenceService(self.repository_mock2)
+        
 
     def test_adding_reference(self):
         self.repository_mock.add_reference.return_value = "BOOK123"
@@ -87,9 +105,9 @@ class TestValidation(unittest.TestCase):
         self.service.get_fields_by_type_name('misc')
         self.repository_mock.get_field_types_by_type_name.assert_called_with('misc')
 
-    '''def test_get_ref_type_names(self):
-        self.service.get_reference_type_names()
-        self.repository_mock.get_ref_type_names.assert_called_with(self)'''
+    def test_get_ref_type_names(self):
+        self.service2.get_reference_type_names()
+        self.repository_mock2.get_ref_type_names.assert_called()
 
     def test_delete_reference(self):
         self.repository_mock.delete_reference.return_value = "BOOK123"
@@ -101,9 +119,67 @@ class TestValidation(unittest.TestCase):
         self.for'''
 
     '''def test_get_all_references(self):
-        self.repository_mock.get_all_references_with_entries()
-        self.service.get_all_references()
-        self.repository_mock.get_all_references_with_entries.assert_called()'''
+        self.service2.get_all_references()
+        self.format_ref.assert_called()'''
+
+    def test_get_all_references_with_id(self):
+        self.service2.get_all_references_with_id()
+        self.repository_mock2.get_all_references_with_entries.assert_called()
+    
+    def test_get_reference_entries(self):
+        self.service2.get_reference_entries()
+        self.repository_mock2.get_reference_entries.assert_called()
+    
+    def test_if_empty(self):
+        with self.assertRaises(UserInputError, msg="Field required!"):
+            self.service.check_if_empty('')
+    
+    def test_if_not_empty(self):
+        self.assertEqual(self.service2.check_if_empty('a'), None)
+    
+    def test_format_references_for_bibtexparser(self):
+
+        test_cases = [
+            {
+                "input": [
+                    {
+                        "id": "1",
+                        "ref_key": "key1",
+                        "type_id": "book",
+                        "some_field": "some value",
+                        "other_field": None,
+                    },
+                    {
+                        "id": "2",
+                        "ref_key": "key2",
+                        "type_id": "article",
+                        "some_field": "another value",
+                        "other_field": "",
+                    },
+                ],
+                "expected_output": [
+                    {
+                        "some_field": "some value",
+                        "ID": "key1",
+
+                    },
+                    {
+                        "some_field": "another value",
+                        "ID": "key2",
+                    },
+                ],
+            },
+
+        ]
+
+        for test_case in test_cases:
+            inputs = test_case["input"]
+            expected_output = test_case["expected_output"]
+            self.assertEqual(
+                format_references_for_bibtexparser(inputs),
+                expected_output,
+                f"Failed for input: {inputs}",
+            )
     
 
 
