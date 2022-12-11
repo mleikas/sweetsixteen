@@ -1,7 +1,7 @@
 from repositories.reference_repository import reference_repository as default_ref_repository
 
 
-def format_references_for_bibtexparser(references:list):
+def format_references_for_bibtexparser(references: list):
     formatted_refs = []
     for reference in references:
         del reference["id"]
@@ -40,6 +40,14 @@ class ReferenceService():
 
     def add_reference(self, reference, ref_type):
         ref_id = self.ref_repo.add_reference(reference, ref_type)
+        for key in reference:
+            if isinstance(reference[key], list):
+                while len(reference[key]) > 1:
+                    for _ in reference[key]:
+                        new_ref = {}
+                        new_ref[key] = reference[key].pop(0)
+                        self.ref_repo.add_reference_entries(new_ref, ref_id)
+                reference[key] = reference[key][0]
         return self.ref_repo.add_reference_entries(reference, ref_id)
 
     def delete_reference(self, ref_key: str):

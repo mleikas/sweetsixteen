@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 from services.reference_service import ReferenceService, UserInputError, format_references_for_bibtexparser
 from repositories.reference_repository import ReferenceRepository
 
@@ -22,7 +22,46 @@ BOOK_REFERENCE = {
     "author_firstname": "Authori",
     "author_lastname": "Authorinen"
 }
-FIELD_TYPES_REFERENCE={
+
+BOOK_REFERENCE_MANY_AUTHORS = {
+    "key": "BOOK1234",
+    "type_id": 1,
+    "address": "",
+    "author": ["Author_1", "Author_2", "Author_3"],
+    "edition": "",
+    "editor": "",
+    "month": "",
+    "note": "",
+    "number": "",
+    "publisher": "Sanoma",
+    "series": "",
+    "title": "Book title",
+    "volume": "",
+    "year": "2022",
+    "author_firstname": "",
+    "author_lastname": ""
+}
+
+BOOK_REFERENCE_PRUNED_AUTHORS = {
+    "key": "BOOK1234",
+    "type_id": 1,
+    "address": "",
+    "author": "Author_3",
+    "edition": "",
+    "editor": "",
+    "month": "",
+    "note": "",
+    "number": "",
+    "publisher": "Sanoma",
+    "series": "",
+    "title": "Book title",
+    "volume": "",
+    "year": "2022",
+    "author_firstname": "",
+    "author_lastname": ""
+}
+
+FIELD_TYPES_REFERENCE = {
     "address": "0",
     "author": "1",
     "edition": "0",
@@ -70,22 +109,35 @@ class TestValidation(unittest.TestCase):
             BOOK_REFERENCE, "book")
         self.repository_mock.add_reference_entries.assert_called_with(
             BOOK_REFERENCE, "BOOK123")
-    
+
+    def test_multiple_authors(self):
+        self.repository_mock.add_reference.return_value = "BOOK1234"
+        self.service.add_reference(
+            BOOK_REFERENCE_MANY_AUTHORS, "book")
+        self.repository_mock.add_reference_entries.assert_has_calls(
+            [call({"author": "Author_1"}, "BOOK1234"),
+             call({"author": "Author_2"}, "BOOK1234"),
+             call(BOOK_REFERENCE_PRUNED_AUTHORS, "BOOK1234")],
+            any_order=False
+        )
+
     def test_check_ref_key_exists(self):
-        self.repository_mock.add_reference.return_value='BOOK123'
-        self.repository_mock.check_ref_key_exists.return_value='BOOK123'
+        self.repository_mock.add_reference.return_value = 'BOOK123'
+        self.repository_mock.check_ref_key_exists.return_value = 'BOOK123'
         self.service.check_reference_key_exists('BOOK1234')
-        self.repository_mock.check_ref_key_exists.assert_called_with("BOOK1234")
+        self.repository_mock.check_ref_key_exists.assert_called_with(
+            "BOOK1234")
 
     def test_get_ref_keys(self):
-        self.repository_mock.get_reference_entries.return_value='1'
+        self.repository_mock.get_reference_entries.return_value = '1'
         self.service.get_ref_keys('0')
         self.repository_mock.get_reference_entries.assert_called_with("0")
-    
+
     def test_get_fields_by_type_name(self):
-        self.repository_mock.get_field_types_by_type_name.return_value='book'
+        self.repository_mock.get_field_types_by_type_name.return_value = 'book'
         self.service.get_fields_by_type_name('misc')
-        self.repository_mock.get_field_types_by_type_name.assert_called_with('misc')
+        self.repository_mock.get_field_types_by_type_name.assert_called_with(
+            'misc')
 
     '''def test_get_ref_type_names(self):
         self.service.get_reference_type_names()
@@ -104,6 +156,3 @@ class TestValidation(unittest.TestCase):
         self.repository_mock.get_all_references_with_entries()
         self.service.get_all_references()
         self.repository_mock.get_all_references_with_entries.assert_called()'''
-    
-
-
