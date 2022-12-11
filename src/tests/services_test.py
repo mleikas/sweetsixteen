@@ -136,61 +136,67 @@ class TestValidation(unittest.TestCase):
     def test_if_not_empty(self):
         self.assertEqual(self.service2.check_if_empty('a'), None)
     
-    def test_format_references_for_bibtexparser(self):
 
-        test_cases = [
-            {
-                "input": [
-                    {
-                        "id": "1",
-                        "ref_key": "key1",
-                        "type_id": "book",
-                        "some_field": "some value",
-                        "other_field": None,
-                    },
-                    {
-                        "id": "2",
-                        "ref_key": "key2",
-                        "type_id": "article",
-                        "some_field": "another value",
-                        "other_field": "",
-                    },
-                ],
-                "expected_output": [
-                    {
-                        "some_field": "some value",
-                        "ID": "key1",
-
-                    },
-                    {
-                        "some_field": "another value",
-                        "ID": "key2",
-                    },
-                ],
-            },
-
-        ]
-
-        for test_case in test_cases:
-            inputs = test_case["input"]
-            expected_output = test_case["expected_output"]
-            self.assertEqual(
-                format_references_for_bibtexparser(inputs),
-                expected_output,
-                f"Failed for input: {inputs}",
-            )
 class TestBibtexValidation(unittest.TestCase):
     def setUp(self):
         self.ref_list = [
-        {"ref_key":'wasd', "type_id": 2,"id": 1, "entry_type": "article", "fields": {"title": "Test Article"}},
-        {"ref_key": "asdw", "type_id":1, "id": 2, "entry_type": "book", "fields": {"title": "Test Book"}},
+        {"ENTRYTYPE": "article", "fields": {"title": "Test Article"}, "ID":'wasd', "ref_key":"wasd", "type_id":2},
+        {"ENTRYTYPE": "book", "fields": {"title": "Test Book"}, "ID": "asdw", "ref_key":"asdw", "type_id":1}
+        ]
+        self.ref_list2 = [
+        {"ENTRYTYPE": "article", "fields": {"title": "Test Article"}, "ID":'wasd'},
+        {"ENTRYTYPE": "book", "fields": {"title": "Test Book"}, "ID": "asdw"}
         ]
 
+
+    def test_format_references_for_bibtexparser(self):
+
+        references = [
+            {
+                "id": 1,
+                "type_id": 1,
+                "ref_key": "key1",
+                "title": "Test Title 1",
+                "author": "Test Author 1",
+            },
+            {
+                "id": 2,
+                "type_id": 2,
+                "ref_key": "key2",
+                "title": "Test Title 2",
+                "author": "Test Author 2",
+            },
+        ]
+
+        ref_type_names = {
+            1: "book",
+            2: "article",
+        }
+
+
+        formatted_refs = bib.format_references_for_bibtexparser(references)
+
+        expected_formatted_refs = [
+            {
+                "ID": "key1",
+                "ENTRYTYPE": "book",
+                "title": "Test Title 1",
+                "author": "Test Author 1",
+            },
+            {
+                "ID": "key2",
+                "ENTRYTYPE": "article",
+                "title": "Test Title 2",
+                "author": "Test Author 2",
+            },
+        ]
+        self.assertEqual(formatted_refs, expected_formatted_refs)
+    
     def test_create_bibdatabase(self):
         bib_db = bib.create_bibdatabase(self.ref_list)
 
         self.assertIsInstance(bib_db, bib.bibdatabase.BibDatabase)
-        self.assertEqual(bib_db.entries, self.ref_list)
+        self.assertEqual(bib_db.entries, self.ref_list2)
     
     '''def test_print_in_bibtex_format(self):'''
 
