@@ -149,6 +149,23 @@ class TestReferenceRepository(unittest.TestCase):
         returned_id = self._ref_repository.get_ref_type_id_by_name("foo")
         self.assertIsNone(returned_id)
 
+    def test_get_ref_type_name_by_id_returns_correct_name(self):
+        expected_names = {
+            1: "book",
+            2: "article",
+            3: "misc",
+            4: "phdthesis",
+            5: "incollection"
+        }
+
+        for id in range(1,len(expected_names)+1):
+            returned_name = self._ref_repository.get_ref_type_name_by_id(id)
+            self.assertEqual(returned_name, expected_names[id])
+
+    def test_get_ref_type_name_by_id_returns_None_if_no_such_id_exists(self):
+        returned_name = self._ref_repository.get_ref_type_name_by_id(100)
+        self.assertIsNone(returned_name)
+
     def test_get_field_types_by_type_name_book_returns_correct_fields(self):
         field_list = self._ref_repository.get_field_types_by_type_name("book")
 
