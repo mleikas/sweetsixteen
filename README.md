@@ -12,7 +12,7 @@
 
 ## Asennus
 
-Poetry tulee olla asennettuna ohjelman suoritusta varten. Tarvittavien kirjastojen asennus onnnistuu komennolla
+Poetry tulee olla asennettuna ohjelman suoritusta varten. Tarvittavien kirjastojen asennus onnistuu komennolla
 
 ```bash
 poetry install
@@ -62,3 +62,4 @@ poetry run invoke lint
 - Unit/integration tests created with at least 85% branch coverage
 - Code pushed to GitHub			
 - Code accepted by tests in Github Actions
+

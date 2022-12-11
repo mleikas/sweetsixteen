@@ -7,7 +7,7 @@ def format_references_for_bibtexparser(references:list):
         del reference["id"]
         reference["ID"] = reference.pop("ref_key")
         type_id = reference.pop("type_id")
-        entry_type = default_ref_repository.get_ref_type_name_by_id(type_id)
+        entry_type = default_ref_repository.get_name_of_reference_type_by_id(type_id)
         reference["ENTRYTYPE"] = entry_type
         no_empties_ref = {}
         for key, value in reference.items():
@@ -32,8 +32,10 @@ class ReferenceService():
         return self.ref_repo.get_reference_entries(ref_id)
 
     def get_fields_by_type_name(self, type_name):
+
         references = self.ref_repo.get_field_types_by_type_name(type_name)
         return references
+
 
     def get_reference_type_names(self):
         return self.ref_repo.get_ref_type_names()
