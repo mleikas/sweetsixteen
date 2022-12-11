@@ -1,20 +1,5 @@
 from repositories.reference_repository import reference_repository as default_ref_repository
-
-
-def format_references_for_bibtexparser(references:list):
-    formatted_refs = []
-    for reference in references:
-        del reference["id"]
-        reference["ID"] = reference.pop("ref_key")
-        type_id = reference.pop("type_id")
-        entry_type = default_ref_repository.get_ref_type_name_by_id(type_id)
-        reference["ENTRYTYPE"] = entry_type
-        no_empties_ref = {}
-        for key, value in reference.items():
-            if value:
-                no_empties_ref[key] = value
-        formatted_refs.append(no_empties_ref)
-    return formatted_refs
+from services.bibtex_service import format_references_for_bibtexparser
 
 
 class UserInputError(Exception):
