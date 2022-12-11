@@ -1,6 +1,6 @@
 import os
 from services.reference_service import ReferenceService
-from services.parser import print_in_bibtex_format, write_bibtex_file
+from services.bibtex_service import print_in_bibtex_format, write_bibtex_file
 
 
 class UI:

@@ -1,7 +1,6 @@
 import os
 from bibtexparser import bibdatabase, dump, dumps
 from repositories.reference_repository import reference_repository as ref_repo
-from services.reference_service import format_references_for_bibtexparser
 
 
 def create_bibdatabase(ref_list:list):
@@ -40,3 +39,18 @@ def make_sure_dir_exists(dir_name:str):
     dir_path = os.path.join(curr_dir, "..", "..", dir_name)
     os.makedirs(dir_path, mode=0o777, exist_ok=True)
     return dir_path
+
+def format_references_for_bibtexparser(references:list):
+    formatted_refs = []
+    for reference in references:
+        del reference["id"]
+        reference["ID"] = reference.pop("ref_key")
+        type_id = reference.pop("type_id")
+        entry_type = ref_repo.get_ref_type_name_by_id(type_id)
+        reference["ENTRYTYPE"] = entry_type
+        no_empties_ref = {}
+        for key, value in reference.items():
+            if value:
+                no_empties_ref[key] = value
+        formatted_refs.append(no_empties_ref)
+    return formatted_refs
