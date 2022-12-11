@@ -2,6 +2,9 @@ import unittest
 from unittest.mock import Mock
 from services.reference_service import ReferenceService, UserInputError, format_references_for_bibtexparser
 from repositories.reference_repository import ReferenceRepository
+import services.bibtex_service as bib
+import os
+import tempfile
 
 
 BOOK_REFERENCE = {
@@ -114,10 +117,6 @@ class TestValidation(unittest.TestCase):
         self.service.delete_reference('book')
         self.repository_mock.delete_reference.assert_called_with("book")
 
-    '''def test_format_references_for_bibtex_parser(self):
-        self.repository_mock.get_ref_type_name_by_id('1')
-        self.for'''
-
     '''def test_get_all_references(self):
         self.service2.get_all_references()
         self.format_ref.assert_called()'''
@@ -180,6 +179,29 @@ class TestValidation(unittest.TestCase):
                 expected_output,
                 f"Failed for input: {inputs}",
             )
+class TestBibtexValidation(unittest.TestCase):
+    def setUp(self):
+        self.ref_list = [
+        {"ref_key":'wasd', "type_id": 2,"id": 1, "entry_type": "article", "fields": {"title": "Test Article"}},
+        {"ref_key": "asdw", "type_id":1, "id": 2, "entry_type": "book", "fields": {"title": "Test Book"}},
+        ]
+
+    def test_create_bibdatabase(self):
+        bib_db = bib.create_bibdatabase(self.ref_list)
+
+        self.assertIsInstance(bib_db, bib.bibdatabase.BibDatabase)
+        self.assertEqual(bib_db.entries, self.ref_list)
     
+    '''def test_print_in_bibtex_format(self):'''
+
+    '''def test_write_bibtex_file(self):'''
+
+    def test_make_sure_dir_exists(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            dir_path = bib.make_sure_dir_exists(os.path.join(temp_dir, "test_dir"))
+
+            self.assertEqual(dir_path, os.path.join(temp_dir, "test_dir"))
+
+            self.assertTrue(os.path.isdir(dir_path))
 
 
