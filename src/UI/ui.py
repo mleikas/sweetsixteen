@@ -25,7 +25,7 @@ class UI:
         print("(3) Show all references in database")
         print("(4) Show references in bibtex format")
         print("(5) Delete reference from database")
-        print("(6) Save references as bibtex file")
+        print("(6) Save all references as bibtex file")
         print("(7) Select references to be saved as bibtex file\n")
         print("(Other) End program\n")
 
@@ -60,8 +60,11 @@ class UI:
             print("No reference with such citation key.")
 
     def save_refs_to_bibtex_file(self):
-        write_bibtex_file()
-        print("The file 'bibtex.bib' was saved to the bibtex_files folder")
+        saved_file = write_bibtex_file()
+        if saved_file:
+            print(f"The file '{saved_file}' was saved to the bibtex_files folder")
+        else:
+            print("No references to save. No bibtex file was created.")
 
     def save_refs_to_bibtex_file_with_selections(self):
 
@@ -97,7 +100,11 @@ class UI:
                     number_list.append(number.strip())
                     number = ""
 
-        write_bibtex_file(number_list)
+        saved_file = write_bibtex_file(number_list)
+        if saved_file:
+            print(f"The file '{saved_file}' was saved to the bibtex_files folder")
+        else:
+            print("No references matching given selections, not creating bibtex file")
 
     def query(self):
 

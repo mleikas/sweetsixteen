@@ -17,24 +17,26 @@ def print_in_bibtex_format(ref_list=None):
     print(dumps(database))
 
 
-def write_bibtex_file(ref_list=None):
-    if ref_list:
+def write_bibtex_file(id_list=None):
+    if id_list:
         all_refs = ref_repo.get_all_references_with_entries()
-        filtered_ref_list = []
+        ref_list = []
         for reference in all_refs:
-            if str(reference["id"]) in ref_list:
-                filtered_ref_list.append(reference)
-
-        if len(filtered_ref_list) != 0:
-            bib_db = create_bibdatabase(filtered_ref_list)
-            with open(os.path.join('bibtex_files', 'bibtex_filtered.bib'), 'w', encoding='UTF-8') as bibtex_file:
-                dump(bib_db, bibtex_file)
-            print("The file 'bibtex_filtered.bib' was saved to the bibtex_files folder")
-        else:
-            print("No references matching given selections, not creating bibtex file")
-
+            if str(reference["id"]) in id_list:
+                ref_list.append(reference)
     else:
         ref_list = ref_repo.get_all_references_with_entries()
+
+    if len(ref_list) > 0:
         bib_db = create_bibdatabase(ref_list)
-        with open(os.path.join('bibtex_files', 'bibtex.bib'), 'w', encoding='UTF-8') as bibtex_file:
+        dir_path = make_sure_dir_exists("bibtex_files")
+        with open(os.path.join(dir_path, "bibtex.bib"), "w", encoding="UTF-8") as bibtex_file:
             dump(bib_db, bibtex_file)
+        return "bibtex.bib"
+    return None
+
+def make_sure_dir_exists(dir_name:str):
+    curr_dir = os.path.dirname(__file__)
+    dir_path = os.path.join(curr_dir, "..", "..", dir_name)
+    os.makedirs(dir_path, mode=0o777, exist_ok=True)
+    return dir_path
