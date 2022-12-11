@@ -60,11 +60,20 @@ class UI:
             print("No reference with such citation key.")
 
     def save_refs_to_bibtex_file(self):
-        saved_file = write_bibtex_file()
+        save_as = self.prompt_for_file_name()
+
+        saved_file = write_bibtex_file(save_as)
         if saved_file:
             print(f"The file '{saved_file}' was saved to the bibtex_files folder")
         else:
             print("No references to save. No bibtex file was created.")
+
+    def prompt_for_file_name(self):
+        while True:
+            save_as = input("Save as: ")
+            if self.input_valid("file_name", save_as.lower()):
+                return save_as
+            print("Only letters A-Z, a-z and numbers 0-9 allowed.")
 
     def save_refs_to_bibtex_file_with_selections(self):
 
@@ -100,7 +109,9 @@ class UI:
                     number_list.append(number.strip())
                     number = ""
 
-        saved_file = write_bibtex_file(number_list)
+        save_as = self.prompt_for_file_name()
+
+        saved_file = write_bibtex_file(save_as, number_list)
         if saved_file:
             print(f"The file '{saved_file}' was saved to the bibtex_files folder")
         else:
@@ -134,7 +145,8 @@ class UI:
 
     def input_valid(self, field, answer):
         rules = {
-            "year": lambda x: x.isnumeric()
+            "year": lambda x: x.isnumeric(),
+            "file_name": lambda x: x.isalnum()
         }
         if field in rules.keys():
             return rules[field](answer)

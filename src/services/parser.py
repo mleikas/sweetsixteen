@@ -16,8 +16,7 @@ def print_in_bibtex_format(ref_list=None):
     database = create_bibdatabase(ref_list)
     print(dumps(database))
 
-
-def write_bibtex_file(id_list=None):
+def write_bibtex_file(save_as="bibtex", id_list=None):
     if id_list:
         all_refs = ref_repo.get_all_references_with_entries()
         ref_list = []
@@ -30,9 +29,10 @@ def write_bibtex_file(id_list=None):
     if len(ref_list) > 0:
         bib_db = create_bibdatabase(ref_list)
         dir_path = make_sure_dir_exists("bibtex_files")
-        with open(os.path.join(dir_path, "bibtex.bib"), "w", encoding="UTF-8") as bibtex_file:
+        file_name = save_as + ".bib"
+        with open(os.path.join(dir_path, file_name), "w", encoding="UTF-8") as bibtex_file:
             dump(bib_db, bibtex_file)
-        return "bibtex.bib"
+        return file_name
     return None
 
 def make_sure_dir_exists(dir_name:str):
