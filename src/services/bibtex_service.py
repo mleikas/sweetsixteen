@@ -1,3 +1,4 @@
+
 import os
 from bibtexparser import bibdatabase, dump, dumps
 from repositories.reference_repository import reference_repository as ref_repo
@@ -14,6 +15,16 @@ def print_in_bibtex_format(ref_list=None):
         ref_list = ref_repo.get_all_references_with_entries()
     database = create_bibdatabase(ref_list)
     print(dumps(database))
+
+def check_if_selected_refs_exist(number_list:list):
+    all_refs = ref_repo.get_all_references_with_entries()
+    ref_list = []
+    for reference in all_refs:
+        ref_list.append(str(reference["id"]))
+    for selected_reference in number_list:
+        if selected_reference not in ref_list:
+            return False
+    return True
 
 def write_bibtex_file(save_as="bibtex", id_list=None):
     if id_list:

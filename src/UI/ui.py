@@ -1,6 +1,7 @@
 import os
 from services.reference_service import ReferenceService
-from services.bibtex_service import print_in_bibtex_format, write_bibtex_file
+from services.bibtex_service import print_in_bibtex_format, write_bibtex_file, \
+    check_if_selected_refs_exist
 
 
 class UI:
@@ -75,6 +76,25 @@ class UI:
                 return save_as
             print("Only letters A-Z, a-z and numbers 0-9 allowed.")
 
+    def validate_reference_selections(self):
+        validated = False
+        selected_references = ""
+        while not validated:
+            selected_references = input("References: ")
+            if selected_references == len(selected_references) * " " \
+                    or len(selected_references) == 0:
+                validated = False
+                print("Select at least one (1) reference!")
+                continue
+            for i in selected_references:
+                if i not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]:
+                    validated = False
+                    print("Only numbers and spaces!")
+                    break
+                validated = True
+
+        return selected_references
+
     def save_refs_to_bibtex_file_with_selections(self):
 
         all_references_with_id = self.ref_service.get_all_references_with_id()
@@ -85,29 +105,26 @@ class UI:
 
         print("Enter references (id) you want to save")
         print("Separate with empty spaces\n")
-        validated = False
-        selected_references = ""
-        while not validated:
-            selected_references = input("References: ")
-            for i in selected_references:
-                if i not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]:
-                    validated = False
-                    print("Only numbers and spaces!")
-                    break
-                validated = True
+        while True:
+            selected_references = self.validate_reference_selections()
 
-        number_list = []
-        number = ""
-        if " " not in selected_references:
-            number_list = selected_references
-        else:
-            for i in range(0, len(selected_references)):
-                if i <= len(selected_references)-2 and selected_references[i+1]!=" ":
-                    number += str(selected_references[i])
-                else:
-                    number += str(selected_references[i])
-                    number_list.append(number.strip())
-                    number = ""
+            number_list = []
+            number = ""
+            if " " not in selected_references:
+                number_list = selected_references
+
+            else:
+                for count, value in enumerate(selected_references):
+                    if count <= len(selected_references)-2 and selected_references[count+1] != " ":
+                        number += str(value)
+                    else:
+                        number += str(value)
+                        number_list.append(number.strip())
+                        number = ""
+
+            if check_if_selected_refs_exist(number_list):
+                break
+            print("At least one invalid reference id given")
 
         save_as = self.prompt_for_file_name()
 
