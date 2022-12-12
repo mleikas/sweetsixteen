@@ -23,7 +23,16 @@ class ReferenceService():
     def get_reference_type_names(self):
         return self.ref_repo.get_ref_type_names()
 
+    def filter_empty_values(self, reference):
+        filtered_reference = {}
+        for key in reference:
+            if reference[key] != "":
+                filtered_reference[key] = reference[key]
+                print(filtered_reference)
+        return filtered_reference
+
     def add_reference(self, reference, ref_type):
+        reference = self.filter_empty_values(reference)
         ref_id = self.ref_repo.add_reference(reference, ref_type)
         return self.ref_repo.add_reference_entries(reference, ref_id)
 
@@ -45,8 +54,6 @@ class ReferenceService():
     def check_if_empty(self, entry):
         if entry == "":
             raise UserInputError("Field required!")
-    
-    
 
 
 reference_service = ReferenceService()
