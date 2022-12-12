@@ -1,20 +1,25 @@
 import mock
 from UI.ui import UI
+from io_mock import IO_mock
+
 
 class UILibrary:
     def __init__(self):
-        self.ui = UI()
+        self.io = IO_mock()
+        self.ui = UI(self.io)
 
-    def start_program():
-        """use this for starting a query or the main program if necessary"""
-        pass
+    def start_program(self):
+        self.ui.query()
 
     def input_value(self, value):
-        """this should inject a value to a running input-command"""
-        mock.patch("builtins.input", return_value = value)
+        self.io.write_to_inputs(value)
 
-    def reference_count_should_be(self, value):
-        self.input_value(4)
-        # TODO make sure only the wanted amound of references comes up,
-        # for example by counting the numero of @-symbols in the parsed output
-        pass
+    def input_multiple_values(self, values):
+        for value in values:
+            self.io.write_to_inputs(value)
+
+    def output_should_contain(self, value):
+        if not value in self.io.outputs:
+            raise AssertionError(
+                f"Output \"{value}\" is not in {str(self.io.outputs)}"
+            )

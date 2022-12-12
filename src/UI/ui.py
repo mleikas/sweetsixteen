@@ -3,9 +3,21 @@ from services.reference_service import ReferenceService
 from services.bibtex_service import print_in_bibtex_format, write_bibtex_file
 
 
+class IO:
+    def input(self, message):
+        return input(message)
+
+    def output(self, message):
+        print(message)
+
+    def clear(self):
+        pass  # method created for robot tests
+
+
 class UI:
 
-    def __init__(self):
+    def __init__(self, io=IO()):
+        self._io = io
         self.ref_service = ReferenceService()
         self.ui_library = UIData()
         self.reference_types = self.ref_service.get_reference_type_names()
@@ -20,24 +32,24 @@ class UI:
         }
 
     def print_menu(self):
-        print("\n(1) Get available reference types")
-        print("(2) Add reference")
-        print("(3) Show all references in database")
-        print("(4) Show references in bibtex format")
-        print("(5) Delete reference from database")
-        print("(6) Save all references as bibtex file")
-        print("(7) Select references to be saved as bibtex file\n")
-        print("(Other) End program\n")
+        self._io.output("\n(1) Get available reference types")
+        self._io.output("(2) Add reference")
+        self._io.output("(3) Show all references in database")
+        self._io.output("(4) Show references in bibtex format")
+        self._io.output("(5) Delete reference from database")
+        self._io.output("(6) Save all references as bibtex file")
+        self._io.output("(7) Select references to be saved as bibtex file\n")
+        self._io.output("(Other) End program\n")
 
     def print_type_names(self):
         ref_types = self.ref_service.get_reference_type_names()
         for r_type in ref_types:
-            print(r_type)
+            self._io.output(r_type)
 
     def add_reference(self):
         key = ''
         while key not in self.reference_types:
-            key = input(
+            key = self._io.input(
                 f"Which reference type {'/'.join(self.reference_types)} ?: "
             )
         ref_dict = self.ref_query(key)
@@ -45,54 +57,56 @@ class UI:
 
     def print_reference_list(self):
         all_references = self.ref_service.get_all_references()
-        print("\n*** References in database ***")
+        self._io.output("\n*** References in database ***")
         for reference in all_references:
             for key, value in reference.items():
-                print(f"{key}: {value}")
-            print("---")
+                self._io.output(f"{key}: {value}")
+            self._io.output("---")
 
     def delete_reference(self):
-        ref_key = input("Enter citation key of reference to delete: ")
+        ref_key = self._io.input("Enter citation key of reference to delete: ")
         if self.ref_service.check_reference_key_exists(ref_key):
             self.ref_service.delete_reference(ref_key)
-            print("Reference was deleted from database.")
+            self._io.output("Reference was deleted from database.")
         else:
-            print("No reference with such citation key.")
+            self._io.output("No reference with such citation key.")
 
     def save_refs_to_bibtex_file(self):
         save_as = self.prompt_for_file_name()
 
         saved_file = write_bibtex_file(save_as)
         if saved_file:
-            print(f"The file '{saved_file}' was saved to the bibtex_files folder")
+            self._io.output(
+                f"The file '{saved_file}' was saved to the bibtex_files folder")
         else:
-            print("No references to save. No bibtex file was created.")
+            self._io.output(
+                "No references to save. No bibtex file was created.")
 
     def prompt_for_file_name(self):
         while True:
-            save_as = input("Save as: ")
+            save_as = self._io.input("Save as: ")
             if self.input_valid("file_name", save_as.lower()):
                 return save_as
-            print("Only letters A-Z, a-z and numbers 0-9 allowed.")
+            self._io.output("Only letters A-Z, a-z and numbers 0-9 allowed.")
 
     def save_refs_to_bibtex_file_with_selections(self):
 
         all_references_with_id = self.ref_service.get_all_references_with_id()
         for reference in all_references_with_id:
             for key, value in reference.items():
-                print(f"{key}: {value}")
-            print("---")
+                self._io.output(f"{key}: {value}")
+            self._io.output("---")
 
-        print("Enter references (id) you want to save")
-        print("Separate with empty spaces\n")
+        self._io.output("Enter references (id) you want to save")
+        self._io.output("Separate with empty spaces\n")
         validated = False
         selected_references = ""
         while not validated:
-            selected_references = input("References: ")
+            selected_references = self._io.input("References: ")
             for i in selected_references:
                 if i not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "]:
                     validated = False
-                    print("Only numbers and spaces!")
+                    self._io.output("Only numbers and spaces!")
                     break
                 validated = True
 
@@ -102,7 +116,7 @@ class UI:
             number_list = selected_references
         else:
             for i in range(0, len(selected_references)):
-                if i <= len(selected_references)-2 and selected_references[i+1]!=" ":
+                if i <= len(selected_references)-2 and selected_references[i+1] != " ":
                     number += str(selected_references[i])
                 else:
                     number += str(selected_references[i])
@@ -113,16 +127,18 @@ class UI:
 
         saved_file = write_bibtex_file(save_as, number_list)
         if saved_file:
-            print(f"The file '{saved_file}' was saved to the bibtex_files folder")
+            self._io.output(
+                f"The file '{saved_file}' was saved to the bibtex_files folder")
         else:
-            print("No references matching given selections, not creating bibtex file")
+            self._io.output(
+                "No references matching given selections, not creating bibtex file")
 
     def query(self):
 
         while True:
             os.system('clear')
             self.print_menu()
-            cmd = input("Command: ")
+            cmd = self._io.input("Command: ")
 
             if cmd not in self.commands.keys():
                 break
@@ -137,7 +153,7 @@ class UI:
     def discard_author_or_editor(self):
         selection = ""
         while selection == "":
-            selection = input(
+            selection = self._io.input(
                 "Press 1 if your reference has an author and 2 if an editor: ")
         if selection == "1":
             return "editor"
@@ -158,7 +174,7 @@ class UI:
         for field, req in fields.items():
             answer = ""
             while True:
-                answer = input(
+                answer = self._io.input(
                     self.ui_library.questions_dict[field] + f'{optionality[req]}')
                 is_valid = self.input_valid(field, answer)
                 if is_valid and answer != "":
@@ -223,5 +239,4 @@ class UIData:
 
 
 def next_input():
-    print()
-    input("Press enter to continue...")
+    input("\nPress enter to continue...")
