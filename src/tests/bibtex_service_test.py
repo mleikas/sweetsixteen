@@ -1,8 +1,10 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import ANY, patch
 from services.bibtex_service import (
     create_bibdatabase,
-    print_in_bibtex_format
+    print_in_bibtex_format,
+    write_bibtex_file,
+    check_if_selected_refs_exist
 )
 
 class TestBibtexService(unittest.TestCase):
@@ -83,3 +85,78 @@ class TestBibtexService(unittest.TestCase):
                 + " title = {A Miscellaneous Blog Post},\n"
                 + " year = {2021}\n}\n"
         )
+
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtext_file_with_no_id_list_calls_get_all_references_from_repo(self, mock_get_all_refs):
+        mock_get_all_refs.return_value = self._ref_list
+        write_bibtex_file("my_references")
+        mock_get_all_refs.assert_called_once()
+
+  
+    @patch('builtins.open')
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtex_file_calls_open_with_correct_file_name_and_returns_it(self, mock_repo, mock_open):
+        mock_repo.return_value = self._ref_list   
+
+        class PathWithDirAndFile(str):
+            def __eq__(self, other):
+                return "bibtex_files/my_references.bib" in other
+        
+        returned_name = write_bibtex_file("my_references")
+        
+        mock_open.assert_called_with(PathWithDirAndFile(mock_open.path), "w", encoding='UTF-8')
+        self.assertEqual(returned_name, "my_references.bib")
+
+    @patch('builtins.open')
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtex_file_calls_open_with_default_file_name_if_none_is_given(self, mock_repo, mock_open):
+        mock_repo.return_value = self._ref_list   
+
+        class PathWithDirAndFile(str):
+            def __eq__(self, other):
+                return "bibtex_files/bibtex.bib" in other
+        
+        returned_name = write_bibtex_file()
+        
+        mock_open.assert_called_with(PathWithDirAndFile(mock_open.path), "w", encoding='UTF-8')
+        self.assertEqual(returned_name, "bibtex.bib")
+
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtex_file_returns_None_if_there_are_no_references_to_write(self, mock_repo):
+        mock_repo.return_value = []
+
+        returned_value = write_bibtex_file()
+        self.assertIsNone(returned_value)
+
+    @patch('builtins.open')
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtex_file_calls_open_and_returns_file_name_if_refs_in_id_list_exist(self, mock_repo, mock_open):
+        mock_repo.return_value = self._ref_list
+        returned_value = write_bibtex_file("my_references", ["1", "6"])
+
+        self.assertEqual(returned_value, "my_references.bib")
+        mock_open.assert_called_with(ANY, "w", encoding='UTF-8')
+
+    @patch('builtins.open')
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_write_bibtex_file_does_not_call_open_and_returns_None_if_refs_in_id_list_do_not_exist(self, mock_repo, mock_open):
+        mock_repo.return_value = []
+        returned_value = write_bibtex_file("my_references", ["1", "6"])
+
+        self.assertEqual(returned_value, None)
+        assert not mock_open.called
+
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_check_if_selected_refs_exist_returns_False_if_id_in_given_list_does_not_match(self, mock_repo):
+        mock_repo.return_value = self._ref_list
+
+        returned_value = check_if_selected_refs_exist(["1", "20"])
+        self.assertEqual(returned_value, False)
+
+    @patch('services.bibtex_service.ref_repo.get_all_references_with_entries')
+    def test_check_if_selected_refs_exist_returns_True_if_all_ids_in_given_list_match(self, mock_repo):
+        mock_repo.return_value = self._ref_list
+
+        returned_value = check_if_selected_refs_exist(["1", "2", "6"])
+        self.assertEqual(returned_value, True)
+ 
