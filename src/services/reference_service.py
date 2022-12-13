@@ -28,7 +28,6 @@ class ReferenceService():
         for key in reference:
             if reference[key] != "":
                 filtered_reference[key] = reference[key]
-                print(filtered_reference)
         return filtered_reference
 
     def add_reference(self, reference, ref_type):
