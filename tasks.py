@@ -6,6 +6,11 @@ def build(ctx):
     ctx.run("python3 src/utils/initialize_database.py")
 
 
+@task(build)
+def demo_build(ctx):
+    ctx.run("python3 src/build_demo_db.py")
+
+
 @task
 def start(ctx):
     ctx.run("python3 src/main.py", pty=True)
