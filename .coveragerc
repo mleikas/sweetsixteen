@@ -5,4 +5,5 @@ omit =
     */utils/*
     *UILibrary.py*
     *main.py*
+    *build_demo_db.py*
     
