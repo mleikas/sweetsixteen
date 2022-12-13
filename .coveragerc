@@ -3,3 +3,6 @@ source = src
 omit = 
     */tests/*
     */utils/*
+    *UILibrary.py*
+    *main.py*
+    
