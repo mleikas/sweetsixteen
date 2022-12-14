@@ -8,7 +8,7 @@
 
 [Linkki backlogeihin](https://docs.google.com/spreadsheets/d/1WaXkt1bA5ho_e-IfcfUK9stK1fLb32ynSzqMo0fLLdM/edit?usp=sharing)
 
-[Linkki viimeisimpään releaseen](https://github.com/mleikas/sweetsixteen/releases/tag/sprint2_release)
+[Linkki viimeisimpään releaseen](https://github.com/mleikas/sweetsixteen/releases/tag/sprint3_release)
 
 ## Asennus
 
