@@ -7,9 +7,13 @@ def parse_ref_type_from_row(row):
 
 
 def parse_ref_object_from_row(row):
-    ref_object = {
-        key: row[key] for key in row.keys()
-    }
+
+    ref_object = {}
+    for key in row.keys():
+        if key in ref_object:
+            ref_object[key] += "and {row[key]}"
+        else:
+            ref_object[key] = row[key]
     return ref_object
 
 
@@ -54,18 +58,17 @@ class ReferenceRepository:
             return result["id"]
         return None
 
-    def get_field_types_by_type_name(self, type_name:str):
-        ref_type_id=self.get_ref_type_id_by_name(type_name)
+    def get_field_types_by_type_name(self, type_name: str):
+        ref_type_id = self.get_ref_type_id_by_name(type_name)
         sql = "SELECT type_name, required FROM field_types \
                WHERE ref_type_id=:ref_type_id ORDER BY required DESC"
         self._cursor.execute(sql, {"ref_type_id": ref_type_id})
         rows = self._cursor.fetchall()
-        references=list(map(parse_ref_object_from_row, rows))
+        references = list(map(parse_ref_object_from_row, rows))
         new_references = {}
         for ref in references:
             new_references[ref['type_name']] = ref["required"]
         return new_references
-
 
     def check_ref_key_exists(self, ref_key: str):
         sql = "SELECT ref_key FROM latex_references WHERE ref_key=:r_key"
