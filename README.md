@@ -4,6 +4,11 @@
 
 [![codecov](https://codecov.io/gh/mleikas/sweetsixteen/branch/main/graph/badge.svg?token=ywnp6wfOY9)](https://codecov.io/gh/mleikas/sweetsixteen)
 
+
+## Loppuraportti
+
+[Linkki projektin loppuraporttiin](https://docs.google.com/document/d/1agQcZbDKt86TKFVwMbqWu7kHqj2e7G0Xpy9XFA2uPsU/edit?usp=sharing)
+
 ## Backlog
 
 [Linkki backlogeihin](https://docs.google.com/spreadsheets/d/1WaXkt1bA5ho_e-IfcfUK9stK1fLb32ynSzqMo0fLLdM/edit?usp=sharing)
